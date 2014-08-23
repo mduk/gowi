@@ -62,6 +62,18 @@ class ResoonseTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( "<?xml version=\"1.0\"?>\n<root><foo bar=\"baz\"/></root>\n", $res->getContent() );
 	}
 
+	public function testXml_SimpleXMLElement() {
+		$xml = new \SimpleXMLElement("<root></root>");
+		$xml2 = $xml->addChild('foo');
+		$xml2->addAttribute('bar', 'baz');
+
+		$res = new Response;
+		$res->xml( $xml );
+
+		$this->assertMime( $res, 'application/xml' );
+		$this->assertEquals( "<?xml version=\"1.0\"?>\n<root><foo bar=\"baz\"/></root>\n", $res->getContent() );
+	}
+
 	public function testJson() {
 		$res = new Response;
 		$res->json( array( 'foo' => 'bar' ) );
