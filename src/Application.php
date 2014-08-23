@@ -15,6 +15,7 @@ class Application {
 	protected $config = array();
 	protected $request;
 	protected $response;
+	protected $defaultResponse;
 
     public function addStage( Stage $stage ) {
         $this->stages[] = $stage;
