@@ -1,0 +1,17 @@
+---
+driver:
+  name: vagrant
+  synced_folders:
+    - [ '..', '/tmp/src' ]
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: debian-7.4 
+
+suites:
+  - name: default
+    run_list:
+      - recipe[gowi]
+    attributes:
