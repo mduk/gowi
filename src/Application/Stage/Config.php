@@ -17,6 +17,7 @@ use Zend\Config\Reader\Json as JsonReader;
 use Symfony\Component\Yaml\Yaml as YamlParser;
 
 class Config implements Stage {
+
 	protected $fileName;
 	
 	public function __construct( $fileName ) {
@@ -64,6 +65,6 @@ class Config implements Stage {
 }
 
 class ConfigException extends Exception {
-	const UNKNOWN_TYPE = 'unknownType';
+	const UNKNOWN_TYPE = 1;
 }
 

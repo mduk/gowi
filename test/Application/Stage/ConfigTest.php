@@ -3,6 +3,8 @@
 namespace Mduk\Gowi\Application\Stage;
 
 use Mduk\Gowi\Application;
+use Mduk\Gowi\Http\Request;
+use Mduk\Gowi\Http\Response;
 use Mduk\Gowi\Application\Stage\Config;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase {
@@ -61,6 +63,12 @@ EOF;
 	public function testYaml() {
 		$file = "---\nfoo:\n  bar: baz";
 		$this->assertAppIsConfigured( $file, 'yaml' );
+	}
+
+	public function testInvalid() {
+		$this->setExpectedException( '\\Mduk\\Gowi\\Application\\Stage\\ConfigException' );
+		$config = new Config( 'file.ext' );
+		$config->execute( new Application, new Request, new Response );
 	}
 
 	protected function assertAppIsConfigured( $file, $ext ) {
