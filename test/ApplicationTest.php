@@ -7,6 +7,9 @@ use Mduk\Gowi\Application\Stage;
 use Mduk\Gowi\Http\Request;
 use Mduk\Gowi\Http\Response;
 
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 class ApplicationTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRun() {
@@ -51,6 +54,21 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 		$app->addStage( $stage1 );
 		$app->addStage( $stage2 );
 		$app->run();
+	}
+
+	public function testLogger() {
+		$app = new Application;
+
+		$app->setLog( new Logger( 'application', array(
+			new StreamHandler( '/tmp/test.log' )
+		) ) );
+
+		$app->setConfig( array( 'debug' => true ) );
+		$app->addStage( $this->mockStage() );
+
+		$app->run();
+
+		$this->assertEquals( 1, count( file( '/tmp/test.log' ) ) );
 	}
 
 	public function mockStage() {

@@ -82,7 +82,8 @@ EOF;
 		$config = array(
 			'foo' => array(
 				'bar' => 'baz'
-			)
+			),
+			'debug' => false
 		);
 
 		$this->assertEquals( $config, $app->getConfig() );

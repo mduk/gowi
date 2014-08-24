@@ -9,19 +9,24 @@ use Mduk\Gowi\Application\Stage;
 use Mduk\Gowi\Http\Request;
 use Mduk\Gowi\Http\Response;
 
+use Psr\Log\LoggerInterface as Log;
+use Monolog\Logger;
+use Monolog\Handler\NullHandler as NullLogHandler;
+
 class Application {
 
 	protected $stages = array();
-	protected $config = array();
+	protected $config = array( 'debug' => false );
 	protected $request;
 	protected $response;
 	protected $defaultResponse;
+	protected $log;
 
     public function addStage( Stage $stage ) {
         $this->stages[] = $stage;
     }
 
-	public function run(Request $req = null, Response $res = null ) {
+	public function run( Request $req = null, Response $res = null ) {
 		$this->request = ( $req ) ?: Request::createFromGlobals();
 		$this->response = ( $res ) ?: $this->getDefaultResponse();
 
@@ -29,7 +34,7 @@ class Application {
 	}
 
 	public function setConfig( array $config ) {
-		$this->config = array_merge( $config, $this->config );
+		$this->config = array_merge( $this->config, $config );
 	}
 
 	public function getConfig( $key = null ) {
@@ -38,13 +43,27 @@ class Application {
 		}
 
 		if ( !isset( $this->config[ $key ] ) ) {
-			throw ApplicationException(
+			throw new ApplicationException(
 				"Invalid config key: {$key}",
 				ApplicationException::INVALID_CONFIG_KEY
 			);
 		}
 
 		return $this->config[ $key ];
+	}
+
+	public function setLog( Log $log ) {
+		$this->log = $log;
+	}
+
+	public function getLog() {
+		if (!$this->log) {
+			$this->log = new Logger( 'application', array(
+				new NullLogHandler
+			) );
+		}
+
+		return $this->log;
 	}
 
 	protected function execute( $stages ) {
@@ -54,13 +73,17 @@ class Application {
 
 		$stage = array_shift( $stages );
 
-		try {
-			$result = $stage->execute( $this, $this->request, $this->response );
-		}
-		catch ( Exception $e ) {
-			return $this->response
-				->error()
-				->text( (string) $e );
+		$result = $stage->execute( $this, $this->request, $this->response );
+
+		if ( $this->getConfig( 'debug' ) ) {
+			$stageType = get_class( $stage );
+			$returnType = ( is_object( $result ) )
+				? get_class( $result )
+				: gettype( $result );
+
+			$this->getLog()->debug(
+				sprintf( 'Exectued stage: %s. Returned: %s', $stageType, $returnType )
+			);
 		}
 
 		if ( $result instanceof Stage ) {
@@ -87,6 +110,6 @@ class Application {
 }
 
 class ApplicationException extends Exception {
-	const INVALID_CONFIG_KEY = 'invalidConfigKey';
+	const INVALID_CONFIG_KEY = '1';
 }
 

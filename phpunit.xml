@@ -5,6 +5,7 @@
   convertNoticesToExceptions="true"
   convertWarningsToExceptions="true"
   bootstrap="./vendor/autoload.php"
+  debug="true"
   stopOnFailure="true">
 
   <logging>
