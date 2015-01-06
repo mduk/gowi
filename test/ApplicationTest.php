@@ -12,67 +12,67 @@ use Monolog\Handler\StreamHandler;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase {
 
-	public function testRun() {
-		$stage1 = $this->mockStage();
-		$stage1->expects( $this->once() )->method( 'execute' );
+    public function testRun() {
+        $stage1 = $this->mockStage();
+        $stage1->expects( $this->once() )->method( 'execute' );
 
-		$stage2 = $this->mockStage();
-		$stage2->expects( $this->once() )->method( 'execute' );
+        $stage2 = $this->mockStage();
+        $stage2->expects( $this->once() )->method( 'execute' );
 
-		$app = new Application;
-		$app->addStage( $stage1 );
-		$app->addStage( $stage2 );
-		$app->run();
-	}
+        $app = new Application;
+        $app->addStage( $stage1 );
+        $app->addStage( $stage2 );
+        $app->run();
+    }
 
-	public function testRun_ReturnStage() {
-		$stage1 = $this->mockStage();
-		$stage1->expects( $this->once() )
-			->method( 'execute' );
+    public function testRun_ReturnStage() {
+        $stage1 = $this->mockStage();
+        $stage1->expects( $this->once() )
+            ->method( 'execute' );
 
-		$stage2 = $this->mockStage();
-		$stage2->expects( $this->once() )
-			->method( 'execute' )
-			->will( $this->returnValue( $stage1 ) );
+        $stage2 = $this->mockStage();
+        $stage2->expects( $this->once() )
+            ->method( 'execute' )
+            ->will( $this->returnValue( $stage1 ) );
 
-		$app = new Application;
-		$app->addStage( $stage2 );
-		$app->run();
-	}
+        $app = new Application;
+        $app->addStage( $stage2 );
+        $app->run();
+    }
 
-	public function testRun_ReturnResponse() {
-		$stage1 = $this->mockStage();
-		$stage1->expects( $this->once() )
-			->method( 'execute' )
-			->will( $this->returnValue( new Response ) );
+    public function testRun_ReturnResponse() {
+        $stage1 = $this->mockStage();
+        $stage1->expects( $this->once() )
+            ->method( 'execute' )
+            ->will( $this->returnValue( new Response ) );
 
-		$stage2 = $this->mockStage();
-		$stage2->expects( $this->never() )
-			->method( 'execute' );
+        $stage2 = $this->mockStage();
+        $stage2->expects( $this->never() )
+            ->method( 'execute' );
 
-		$app = new Application;
-		$app->addStage( $stage1 );
-		$app->addStage( $stage2 );
-		$app->run();
-	}
+        $app = new Application;
+        $app->addStage( $stage1 );
+        $app->addStage( $stage2 );
+        $app->run();
+    }
 
-	public function testLogger() {
-		$app = new Application;
+    public function testLogger() {
+        $app = new Application;
 
-		$app->setLog( new Logger( 'application', array(
-			new StreamHandler( '/tmp/test.log' )
-		) ) );
+        $app->setLog( new Logger( 'application', array(
+            new StreamHandler( '/tmp/test.log' )
+        ) ) );
 
-		$app->setConfig( array( 'debug' => true ) );
-		$app->addStage( $this->mockStage() );
+        $app->setConfig( array( 'debug' => true ) );
+        $app->addStage( $this->mockStage() );
 
-		$app->run();
+        $app->run();
 
-		$this->assertEquals( 1, count( file( '/tmp/test.log' ) ) );
-	}
+        $this->assertEquals( 1, count( file( '/tmp/test.log' ) ) );
+    }
 
-	public function mockStage() {
-		return $this->getMock( '\\Mduk\\Gowi\\Application\\Stage' );
-	}
+    public function mockStage() {
+        return $this->getMock( '\\Mduk\\Gowi\\Application\\Stage' );
+    }
 }
 

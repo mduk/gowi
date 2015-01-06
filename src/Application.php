@@ -15,101 +15,101 @@ use Monolog\Handler\NullHandler as NullLogHandler;
 
 class Application {
 
-	protected $stages = array();
-	protected $config = array( 'debug' => false );
-	protected $request;
-	protected $response;
-	protected $defaultResponse;
-	protected $log;
+    protected $stages = array();
+    protected $config = array( 'debug' => false );
+    protected $request;
+    protected $response;
+    protected $defaultResponse;
+    protected $log;
 
     public function addStage( Stage $stage ) {
         $this->stages[] = $stage;
     }
 
-	public function run( Request $req = null, Response $res = null ) {
-		$this->request = ( $req ) ?: Request::createFromGlobals();
-		$this->response = ( $res ) ?: $this->getDefaultResponse();
+    public function run( Request $req = null, Response $res = null ) {
+        $this->request = ( $req ) ?: Request::createFromGlobals();
+        $this->response = ( $res ) ?: $this->getDefaultResponse();
 
-		return $this->execute( $this->stages );
-	}
+        return $this->execute( $this->stages );
+    }
 
-	public function setConfig( array $config ) {
-		$this->config = array_merge( $this->config, $config );
-	}
+    public function setConfig( array $config ) {
+        $this->config = array_merge( $this->config, $config );
+    }
 
-	public function getConfig( $key = null ) {
-		if ( !$key ) {
-			return $this->config;
-		}
+    public function getConfig( $key = null ) {
+        if ( !$key ) {
+            return $this->config;
+        }
 
-		if ( !isset( $this->config[ $key ] ) ) {
-			throw new ApplicationException(
-				"Invalid config key: {$key}",
-				ApplicationException::INVALID_CONFIG_KEY
-			);
-		}
+        if ( !isset( $this->config[ $key ] ) ) {
+            throw new ApplicationException(
+                "Invalid config key: {$key}",
+                ApplicationException::INVALID_CONFIG_KEY
+            );
+        }
 
-		return $this->config[ $key ];
-	}
+        return $this->config[ $key ];
+    }
 
-	public function setLog( Log $log ) {
-		$this->log = $log;
-	}
+    public function setLog( Log $log ) {
+        $this->log = $log;
+    }
 
-	public function getLog() {
-		if (!$this->log) {
-			$this->log = new Logger( 'application', array(
-				new NullLogHandler
-			) );
-		}
+    public function getLog() {
+        if (!$this->log) {
+            $this->log = new Logger( 'application', array(
+                new NullLogHandler
+            ) );
+        }
 
-		return $this->log;
-	}
+        return $this->log;
+    }
 
-	protected function execute( $stages ) {
-		if ( count( $stages ) == 0 ) {
-			return $this->response;
-		}
+    protected function execute( $stages ) {
+        if ( count( $stages ) == 0 ) {
+            return $this->response;
+        }
 
-		$stage = array_shift( $stages );
+        $stage = array_shift( $stages );
 
-		$result = $stage->execute( $this, $this->request, $this->response );
+        $result = $stage->execute( $this, $this->request, $this->response );
 
-		if ( $this->getConfig( 'debug' ) ) {
-			$stageType = get_class( $stage );
-			$returnType = ( is_object( $result ) )
-				? get_class( $result )
-				: gettype( $result );
+        if ( $this->getConfig( 'debug' ) ) {
+            $stageType = get_class( $stage );
+            $returnType = ( is_object( $result ) )
+                ? get_class( $result )
+                : gettype( $result );
 
-			$this->getLog()->debug(
-				sprintf( 'Exectued stage: %s. Returned: %s', $stageType, $returnType )
-			);
-		}
+            $this->getLog()->debug(
+                sprintf( 'Exectued stage: %s. Returned: %s', $stageType, $returnType )
+            );
+        }
 
-		if ( $result instanceof Stage ) {
-			array_unshift( $stages, $result );
-		}
+        if ( $result instanceof Stage ) {
+            array_unshift( $stages, $result );
+        }
 
-		if ( $result instanceof Response ) {
-			return $result;
-		}
+        if ( $result instanceof Response ) {
+            return $result;
+        }
 
-		return $this->execute( $stages );
-	}
+        return $this->execute( $stages );
+    }
 
-	protected function getDefaultResponse() {
-		if (!$this->defaultResponse) {
-			$this->defaultResponse = new Response('Hello World!', 200, array(
-				'Content-Type' => 'text/plain'
-			) );
-		}
+    protected function getDefaultResponse() {
+        if (!$this->defaultResponse) {
+            $this->defaultResponse = new Response('Hello World!', 200, array(
+                'Content-Type' => 'text/plain'
+            ) );
+        }
 
-		return clone $this->defaultResponse;
-	}
+        return clone $this->defaultResponse;
+    }
 
 }
 
 class ApplicationException extends Exception {
-	const INVALID_CONFIG_KEY = '1';
+    const INVALID_CONFIG_KEY = '1';
 }
 
