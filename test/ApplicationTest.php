@@ -56,6 +56,18 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
         $app->run();
     }
 
+    public function testConfig() {
+        $app = new Application;
+        $app->setConfig( array( 'foo' => 'bar' ) );
+        $this->assertEquals( 'bar', $app->getConfig( 'foo' ) );
+    }
+
+    public function testGetConfig_InvalidKey() {
+        $this->setExpectedException( '\\Mduk\\Gowi\\Application\\Exception' );
+        $app = new Application;
+        $app->getConfig( 'foo' );
+    }
+
     public function mockStage() {
         return $this->getMock( '\\Mduk\\Gowi\\Application\\Stage' );
     }

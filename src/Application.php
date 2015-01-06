@@ -2,7 +2,7 @@
 
 namespace Mduk\Gowi;
 
-use Exception;
+use Mduk\Gowi\Application\Exception;
 
 use Mduk\Gowi\Application\Stage;
 
@@ -38,9 +38,9 @@ class Application {
         }
 
         if ( !isset( $this->config[ $key ] ) ) {
-            throw new ApplicationException(
+            throw new Exception(
                 "Invalid config key: {$key}",
-                ApplicationException::INVALID_CONFIG_KEY
+                Exception::INVALID_CONFIG_KEY
             );
         }
 
@@ -90,7 +90,4 @@ class Application {
 
 }
 
-class ApplicationException extends Exception {
-    const INVALID_CONFIG_KEY = '1';
-}
 
