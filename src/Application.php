@@ -9,10 +9,6 @@ use Mduk\Gowi\Application\Stage;
 use Mduk\Gowi\Http\Request;
 use Mduk\Gowi\Http\Response;
 
-use Psr\Log\LoggerInterface as Log;
-use Monolog\Logger;
-use Monolog\Handler\NullHandler as NullLogHandler;
-
 class Application {
 
     protected $stages = array();
@@ -20,7 +16,6 @@ class Application {
     protected $request;
     protected $response;
     protected $defaultResponse;
-    protected $log;
 
     public function addStage( Stage $stage ) {
         $this->stages[] = $stage;
@@ -50,20 +45,6 @@ class Application {
         }
 
         return $this->config[ $key ];
-    }
-
-    public function setLog( Log $log ) {
-        $this->log = $log;
-    }
-
-    public function getLog() {
-        if (!$this->log) {
-            $this->log = new Logger( 'application', array(
-                new NullLogHandler
-            ) );
-        }
-
-        return $this->log;
     }
 
     protected function execute( $stages ) {

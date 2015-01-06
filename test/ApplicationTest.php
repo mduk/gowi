@@ -56,21 +56,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
         $app->run();
     }
 
-    public function testLogger() {
-        $app = new Application;
-
-        $app->setLog( new Logger( 'application', array(
-            new StreamHandler( '/tmp/test.log' )
-        ) ) );
-
-        $app->setConfig( array( 'debug' => true ) );
-        $app->addStage( $this->mockStage() );
-
-        $app->run();
-
-        $this->assertEquals( 1, count( file( '/tmp/test.log' ) ) );
-    }
-
     public function mockStage() {
         return $this->getMock( '\\Mduk\\Gowi\\Application\\Stage' );
     }
