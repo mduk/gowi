@@ -11,3 +11,10 @@ composer: composer.json
 
 phpunit: phpunit.xml
 	./vendor/bin/phpunit
+
+vm:
+	cd ./cookbook/ && kitchen converge
+
+shell:
+	cd ./cookbook/ && kitchen login
+
