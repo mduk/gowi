@@ -1,5 +1,7 @@
 # Gowi
 
+![Travis Build Status](https://api.travis-ci.org/mduk/gowi.svg)
+
 Gowi aims to keep it simple, to be flexible, and to be lightweight. Most importantly however, Gowi hopes to find the middle ground between all those things.
 
 There are Three main concepts at work in Gowi. The Application, Services, and Stages.
