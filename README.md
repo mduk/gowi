@@ -124,7 +124,7 @@ Now for the obligatory super-simplified example of everything in one file, no do
     	
     	/**
     	 * Call on the User Service to do the thing we wanted, change the user name.
-    	 * In this case we assume that the changeUserName will validate it's parameters
+    	 * In this case we assume that the changeUserName method will validate it's parameters
     	 * and will throw an exception if either of them are unacceptable.
     	 */
     	$app->getService( 'user' )->changeUserName( $oldName, $newName );
