@@ -50,8 +50,8 @@ Now for the obligatory super-simplified example of everything in one file, no do
     use Mduk\Gowi\Application;
     use Mduk\Gowi\Application\Stage\Stub as StubStage;
     
-    use YourCompany\\Domain\\User\\Service as UserService;
-    use YourCompany\\Domain\\User\\Db as UserDb;
+    use YourCompany\Domain\User\Service as UserService;
+    use YourCompany\Domain\User\Db as UserDb;
     
     /**
      * This is a stupid-simple application.
