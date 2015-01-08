@@ -15,7 +15,7 @@ Simply put, these are objects that do things for you. There are two main charact
 
 This means that services can't read config or call other services from the Application, they can't add stages, they have no involvement with the Application object *whatsoever*. Everything else is up to you.
 
-If a service needs some configuration, then a bootstrap Stage should read the config from the Application and pass it to the service object after it has been instantiated. Likewise if a Service requires a reference to another Service, then there should be a Stage to capture that when the Service is initialised.
+If a service needs some configuration, then a bootstrap Stage should read the config from the Application and pass it to the service object as it's being initialised. Likewise if a Service requires a reference to another Service, then there should be a Stage to capture that when the Service is initialised.
 
 This helps to keep our dependencies visible and maintain a divide between your Application and your Domain.
 
@@ -27,7 +27,7 @@ Stages are objects that implement the `Mduk\Gowi\Application\Stage` interface.  
 
 By passing the Application object to Stages, we are allowing them access to all the Application's resources, namely Configuration and Services. By passing the Request, they all have immediate access to the input data, and by passing a *shared, persistent* Response instance to each of them, the Response can be built up incrementally. A great example of this is that a single stage can read query parameters and set response cookies early on, leaving your controller care-free.
 
-Just as a Response can be built incrementally, a Response can also be handled incrementally. Maybe you want to handle all your GET requests first before you bother connecting to the write database?
+Just as a Response can be built incrementally, a Request can also be handled incrementally. Maybe you want to handle all your GET requests first before you bother connecting to the write database?
 
 Because stages are just things that happen in order, there's absolutely no distinction between a bootstrapper and a controller beyond a line on your whiteboard. This makes it easy to reorder stages and create multi-tierd applications.
 
