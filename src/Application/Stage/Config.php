@@ -18,53 +18,56 @@ use Symfony\Component\Yaml\Yaml as YamlParser;
 
 class Config implements Stage {
 
-	protected $fileName;
-	
-	public function __construct( $fileName ) {
-		$this->fileName = $fileName;
-	}
-	
-	public function execute( Application $app, Request $req, Response $res ) {
-		$path = $this->fileName;
-		$extension = strtolower( pathinfo( $path, PATHINFO_EXTENSION ) );
-		
-		switch ( $extension ) {
-			case 'php': 
-				$reader = new ZendConfig( require $path );
-				$config = $reader->toArray();
-				break;
-				
-			case 'ini': 
-				$reader = new IniReader;
-				$config = $reader->fromFile( $path );
-				break;
-			
-			case 'xml':
-				$reader = new XmlReader;
-				$config = $reader->fromFile( $path );
-				break;
-			
-			case 'json': 
-				$reader = new JsonReader;
-				$config = $reader->fromFile( $path );
-				break;
-			
-			case 'yaml':
-				$config = YamlParser::parse( $path );
-				break;
+    protected $fileName;
+    protected $namespace;
 
-			default:
-				throw new ConfigException(
-					"Unknown file type: {$path}",
-					ConfigException::UNKNOWN_TYPE
-				);
-		}
-		
-		$app->setConfig( $config );
-	}
-}
+    public function __construct( $fileName, $namespace=null ) {
+        $this->fileName = $fileName;
+        $this->namespace = $namespace;
+    }
 
-class ConfigException extends Exception {
-	const UNKNOWN_TYPE = 1;
+    public function execute( Application $app, Request $req, Response $res ) {
+        $path = $this->fileName;
+        $extension = strtolower( pathinfo( $path, PATHINFO_EXTENSION ) );
+
+        switch ( $extension ) {
+            case 'php':
+                $reader = new ZendConfig( require $path );
+                $config = $reader->toArray();
+                break;
+
+            case 'ini':
+                $reader = new IniReader;
+                $config = $reader->fromFile( $path );
+                break;
+
+            case 'xml':
+                $reader = new XmlReader;
+                $config = $reader->fromFile( $path );
+                break;
+
+            case 'json':
+                $reader = new JsonReader;
+                $config = $reader->fromFile( $path );
+                break;
+
+            case 'yaml':
+                $config = YamlParser::parse( $path );
+                break;
+
+            default:
+                throw new Config\Exception(
+                    "Unknown file type: {$path}",
+                    Config\Exception::UNKNOWN_TYPE
+                );
+        }
+
+        if ( $this->namespace ) {
+            $app->setConfig( [ $this->namespace => $config ] );
+        }
+        else {
+            $app->setConfig( $config );
+        }
+    }
 }
 
