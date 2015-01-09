@@ -11,8 +11,9 @@ use Mduk\Gowi\Http\Response;
 
 class Application {
 
-    protected $stages = array();
-    protected $config = array( 'debug' => false );
+    protected $stages = [];
+    protected $services = [];
+    protected $config = [ 'debug' => false ];
     protected $request;
     protected $response;
     protected $defaultResponse;
@@ -45,6 +46,28 @@ class Application {
         }
 
         return $this->config[ $key ];
+    }
+
+    public function registerService( $name, $service ) {
+        if ( isset( $this->services[ $name ] ) ) {
+            throw new Application\Exception(
+                "Service {$name} is already registered!",
+                Application\Exception::SERVICE_ALREADY_REGISTERED
+            );
+        }
+
+        $this->services[ $name ] = $service;
+    }
+
+    public function getService( $name ) {
+        if ( !isset( $this->services[ $name ] ) ) {
+            throw new Application\Exception(
+                "Service {$name} is is not registered!",
+                Application\Exception::SERVICE_NOT_REGISTERED
+            );
+        }
+
+        return $this->services[ $name ];
     }
 
     protected function execute( $stages ) {

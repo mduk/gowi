@@ -68,7 +68,16 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
         $app->getConfig( 'foo' );
     }
 
-    public function mockStage() {
+    public function testServices() {
+        $service = (object) [ 'foo' => 'bar' ];
+        $app = new Application;
+        $app->registerService( 'foo', $service );
+
+        $this->assertEquals( $service, $app->getService( 'foo' ),
+            "Didn't get the expected service back" );
+    }
+
+    protected function mockStage() {
         return $this->getMock( '\\Mduk\\Gowi\\Application\\Stage' );
     }
 }
