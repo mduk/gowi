@@ -79,17 +79,6 @@ class Application {
 
         $result = $stage->execute( $this, $this->request, $this->response );
 
-        if ( $this->getConfig( 'debug' ) ) {
-            $stageType = get_class( $stage );
-            $returnType = ( is_object( $result ) )
-                ? get_class( $result )
-                : gettype( $result );
-
-            $this->getLog()->debug(
-                sprintf( 'Exectued stage: %s. Returned: %s', $stageType, $returnType )
-            );
-        }
-
         if ( $result instanceof Stage ) {
             array_unshift( $stages, $result );
         }
