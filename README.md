@@ -135,8 +135,7 @@ Now for the obligatory super-simplified example of everything in one file, no do
     	 * Prepare a response. Not a whole lot to do here, so we just give some indication
     	 * that it worked and the app didn't white-screen-of-untimely-death on us.
     	 */
-    	$res->setStatusCode( 200 );
-    	$res->setContent( '<html><body><h1>Username was changed</h1></body></html>' );
+    	$res->ok()->html( '<html><body><h1>Username was changed</h1></body></html>' );
     	
     	
     	return $res;
@@ -144,6 +143,31 @@ Now for the obligatory super-simplified example of everything in one file, no do
     
     $app->run()->respond();
  
+# Feature Flagging
+
+Stages read Feature Flags from Application configuration and initialise Services accordingly.
+
+    <?php // feature_flags.php
+
+    class UserService {}
+    class MagicalUserService extends UserService {}
+
+    $app = new Application;
+    $app->setConfig( 'feature_flags', array( 'more_magic' => false ) );
+
+    $app->addStage( new StubStage( function( Application $app, Request $req, Response $res ) {
+        $flag = $app->getConfig( 'feature_flags' )[ 'more_magic' ];
+
+        if ( $flag ) {
+            $service = new MagicalUserService;
+        }
+        else {
+            $service = new UserService;
+        }
+
+        $app->registerService( '' );
+    } ) );
+
 # Dev Environment & Building
 
 A development environment is provided in the `cookbook/` directory, I'm practicing chef.
