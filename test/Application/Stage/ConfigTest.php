@@ -65,10 +65,28 @@ EOF;
         $this->assertAppIsConfigured( $file, 'yaml' );
     }
 
-    public function testInvalid() {
-        $this->setExpectedException( '\\Mduk\\Gowi\\Application\\Stage\\Config\\Exception' );
-        $config = new Config( 'file.ext' );
-        $config->execute( new Application, new Request, new Response );
+    public function testRequiredUnreadable() {
+        try {
+            $config = new Config( '/tmp/file.json', [ 'required' => true ] );
+            $config->execute( new Application, new Request, new Response );
+        }
+        catch ( Config\Exception $e ) {
+            $this->assertEquals( Config\Exception::FILE_UNREADABLE, $e->getCode(),
+                "Wrong exception code" );
+        }
+    }
+
+    public function testInvalidExtension() {
+        file_put_contents( '/tmp/file.ext', 'nonsense' );
+        try {
+            $config = new Config( '/tmp/file.ext' );
+            $config->execute( new Application, new Request, new Response );
+        }
+        catch ( Config\Exception $e ) {
+            $this->assertEquals( Config\Exception::UNKNOWN_TYPE, $e->getCode(),
+                "Wrong exception code" );
+        }
+        unlink( '/tmp/file.ext' );
     }
 
     public function testNamespace() {
@@ -77,7 +95,7 @@ EOF;
         file_put_contents( $filename, $file );
 
         $app = new Application;
-        $app->addStage( new Config( $filename, 'ns' ) );
+        $app->addStage( new Config( $filename, [ 'namespace' => 'ns' ] ) );
         $app->run();
 
         $config = array(
@@ -92,6 +110,11 @@ EOF;
         $this->assertEquals( $config, $app->getConfig() );
 
         unlink( $filename );
+    }
+
+    public function testMissingOptionalFile() {
+        $config = new Config( '/tmp/foo.xml', [ 'required' => false ] );
+        $this->assertNull( $config->execute( new Application, new Request, new Response ) );
     }
 
     protected function assertAppIsConfigured( $file, $ext ) {

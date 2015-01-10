@@ -18,46 +18,58 @@ use Symfony\Component\Yaml\Yaml as YamlParser;
 
 class Config implements Stage {
 
-    protected $fileName;
+    protected $path;
     protected $namespace;
+    protected $required;
 
-    public function __construct( $fileName, $namespace=null ) {
-        $this->fileName = $fileName;
-        $this->namespace = $namespace;
+    public function __construct( $path, array $options=[] ) {
+        $this->path = $path;
+        $this->namespace = isset( $options['namespace'] ) ? $options['namespace'] : null;
+        $this->required = isset( $options['required'] ) ? $options['required'] : true;
     }
 
     public function execute( Application $app, Request $req, Response $res ) {
-        $path = $this->fileName;
-        $extension = strtolower( pathinfo( $path, PATHINFO_EXTENSION ) );
+        if ( !$this->required && !is_readable( $this->path ) ) {
+            return null;
+        }
+
+        if ( $this->required && !is_readable( $this->path ) ) {
+            throw new Config\Exception(
+                "The config file {$this->path} is unreadable",
+                Config\Exception::FILE_UNREADABLE
+            );
+        }
+
+        $extension = strtolower( pathinfo( $this->path, PATHINFO_EXTENSION ) );
 
         switch ( $extension ) {
             case 'php':
-                $reader = new ZendConfig( require $path );
+                $reader = new ZendConfig( require $this->path );
                 $config = $reader->toArray();
                 break;
 
             case 'ini':
                 $reader = new IniReader;
-                $config = $reader->fromFile( $path );
+                $config = $reader->fromFile( $this->path );
                 break;
 
             case 'xml':
                 $reader = new XmlReader;
-                $config = $reader->fromFile( $path );
+                $config = $reader->fromFile( $this->path );
                 break;
 
             case 'json':
                 $reader = new JsonReader;
-                $config = $reader->fromFile( $path );
+                $config = $reader->fromFile( $this->path );
                 break;
 
             case 'yaml':
-                $config = YamlParser::parse( $path );
+                $config = YamlParser::parse( $this->path );
                 break;
 
             default:
                 throw new Config\Exception(
-                    "Unknown file type: {$path}",
+                    "Unknown file type: {$this->path}",
                     Config\Exception::UNKNOWN_TYPE
                 );
         }
