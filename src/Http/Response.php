@@ -24,11 +24,13 @@ class Response extends SfResponse {
 	public function text( $text ) {
 		$this->contentType( 'text/plain' );
 		$this->setContent( $text );
+		return $this;
 	}
 
 	public function html( $html ) {
 		$this->contentType( 'text/html' );
 		$this->setContent( $html );
+		return $this;
 	}
 
 	public function xml( $xml ) {
@@ -43,16 +45,17 @@ class Response extends SfResponse {
 		}
 
 		$this->setContent( $xml );
+		return $this;
 	}
 
 	public function json( $data ) {
 		$this->contentType( 'application/json' );
 		$this->setContent( json_encode( $data ) );
+		return $this;
 	}
 
 	protected function contentType( $mime ) {
 		$this->headers->set( 'Content-Type', $mime );
 	}
-
 }
 
