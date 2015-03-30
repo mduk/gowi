@@ -48,7 +48,7 @@ class Application {
         return $this->config[ $key ];
     }
 
-    public function registerService( $name, $service ) {
+    public function setService( $name, $service ) {
         if ( isset( $this->services[ $name ] ) ) {
             throw new Application\Exception(
                 "Service {$name} is already registered!",
