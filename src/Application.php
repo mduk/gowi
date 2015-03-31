@@ -11,12 +11,21 @@ use Mduk\Gowi\Http\Response;
 
 class Application {
 
+    protected $baseDir = '';
     protected $stages = [];
     protected $services = [];
     protected $config = [ 'debug' => false ];
     protected $request;
     protected $response;
     protected $defaultResponse;
+
+    public function __construct( $baseDir ) {
+        $this->baseDir = $baseDir;
+    }
+
+    public function getBaseDir() {
+        return $this->baseDir;
+    }
 
     public function addStage( Stage $stage ) {
         $this->stages[] = $stage;
