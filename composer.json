@@ -10,6 +10,7 @@
 	],
 	"require": {
 		"symfony/http-foundation": "2.3.*",
+		"symfony/routing": "~2.6",
 		"zendframework/zend-config": "2.3.*",
 		"zendframework/zend-json": "2.3.*",
 		"monolog/monolog": "1.10.*"
