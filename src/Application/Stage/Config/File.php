@@ -1,8 +1,6 @@
 <?php
 
-namespace Mduk\Gowi\Application\Stage;
-
-use Exception;
+namespace Mduk\Gowi\Application\Stage\Config;
 
 use Mduk\Gowi\Application;
 use Mduk\Gowi\Http\Request;
@@ -16,7 +14,7 @@ use Zend\Config\Reader\Xml as XmlReader;
 use Zend\Config\Reader\Json as JsonReader;
 use Symfony\Component\Yaml\Yaml as YamlParser;
 
-class Config implements Stage {
+class File implements Stage {
 
     protected $path;
     protected $namespace;
@@ -34,9 +32,9 @@ class Config implements Stage {
         }
 
         if ( $this->required && !is_readable( $this->path ) ) {
-            throw new Config\Exception(
+            throw new File\Exception(
                 "The config file {$this->path} is unreadable",
-                Config\Exception::FILE_UNREADABLE
+                File\Exception::FILE_UNREADABLE
             );
         }
 
@@ -68,9 +66,9 @@ class Config implements Stage {
                 break;
 
             default:
-                throw new Config\Exception(
+                throw new File\Exception(
                     "Unknown file type: {$this->path}",
-                    Config\Exception::UNKNOWN_TYPE
+                    File\Exception::UNKNOWN_TYPE
                 );
         }
 

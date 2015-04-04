@@ -1,13 +1,13 @@
 <?php
 
-namespace Mduk\Gowi\Application\Stage;
+namespace Mduk\Gowi\Application\Stage\Config;
 
 use Mduk\Gowi\Application;
 use Mduk\Gowi\Http\Request;
 use Mduk\Gowi\Http\Response;
 use Mduk\Gowi\Application\Stage\Config;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase {
+class FileTest extends \PHPUnit_Framework_TestCase {
 
     public function testPhp() {
         $file = <<<EOF
@@ -67,23 +67,25 @@ EOF;
 
     public function testRequiredUnreadable() {
         try {
-            $config = new Config( '/tmp/file.json', [ 'required' => true ] );
+            $config = new File( '/tmp/file.json', [ 'required' => true ] );
             $config->execute( new Application('/tmp'), new Request, new Response );
         }
-        catch ( Config\Exception $e ) {
-            $this->assertEquals( Config\Exception::FILE_UNREADABLE, $e->getCode(),
-                "Wrong exception code" );
+        catch ( \Exception $e ) {
+			$this->assertInstanceOf( 'Mduk\\Gowi\\Application\\Stage\\Config\\File\\Exception', $e,
+				"Stage should have thrown an Application\\Stage\\Config\\File\\Exception." );
+            $this->assertEquals( File\Exception::FILE_UNREADABLE, $e->getCode(),
+                "Exception code should have been File\\Exception::FILE_UNREADABLE" );
         }
     }
 
     public function testInvalidExtension() {
         file_put_contents( '/tmp/file.ext', 'nonsense' );
         try {
-            $config = new Config( '/tmp/file.ext' );
+            $config = new File( '/tmp/file.ext' );
             $config->execute( new Application('/tmp'), new Request, new Response );
         }
-        catch ( Config\Exception $e ) {
-            $this->assertEquals( Config\Exception::UNKNOWN_TYPE, $e->getCode(),
+        catch ( File\Exception $e ) {
+            $this->assertEquals( File\Exception::UNKNOWN_TYPE, $e->getCode(),
                 "Wrong exception code" );
         }
         unlink( '/tmp/file.ext' );
@@ -95,7 +97,7 @@ EOF;
         file_put_contents( $filename, $file );
 
         $app = new Application('/tmp');
-        $app->addStage( new Config( $filename, [ 'namespace' => 'ns' ] ) );
+        $app->addStage( new File( $filename, [ 'namespace' => 'ns' ] ) );
         $app->run();
 
         $config = array(
@@ -113,7 +115,7 @@ EOF;
     }
 
     public function testMissingOptionalFile() {
-        $config = new Config( '/tmp/foo.xml', [ 'required' => false ] );
+        $config = new File( '/tmp/foo.xml', [ 'required' => false ] );
         $this->assertNull( $config->execute( new Application('/tmp'), new Request, new Response ) );
     }
 
@@ -122,7 +124,7 @@ EOF;
         file_put_contents( $filename, $file );
 
         $app = new Application('/tmp');
-        $app->addStage( new Config( $filename ) );
+        $app->addStage( new File( $filename ) );
         $app->run();
 
         $config = array(
