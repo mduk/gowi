@@ -60,6 +60,11 @@ EOF;
         $this->assertAppIsConfigured( $file, 'json' );
     }
 
+    public function testYml() {
+        $file = "---\nfoo:\n  bar: baz";
+        $this->assertAppIsConfigured( $file, 'yml' );
+    }
+
     public function testYaml() {
         $file = "---\nfoo:\n  bar: baz";
         $this->assertAppIsConfigured( $file, 'yaml' );

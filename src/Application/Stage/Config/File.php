@@ -62,6 +62,7 @@ class File implements Stage {
                 break;
 
             case 'yaml':
+			case 'yml':
                 $config = YamlParser::parse( $this->path );
                 break;
 
