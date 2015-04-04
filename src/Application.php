@@ -2,6 +2,9 @@
 
 namespace Mduk\Gowi;
 
+use Psr\Log\LoggerInterface as PsrLogger;
+use Psr\Log\NullLogger as PsrNullLogger;
+
 use Mduk\Gowi\Application\Exception;
 
 use Mduk\Gowi\Application\Stage;
@@ -13,6 +16,7 @@ class Application {
 
     protected $baseDir = '';
     protected $stages = [];
+    protected $log;
     protected $services = [];
     protected $config = [ 'debug' => false ];
     protected $request;
@@ -36,6 +40,18 @@ class Application {
         $this->response = ( $res ) ?: $this->getDefaultResponse();
 
         return $this->execute( $this->stages );
+    }
+
+    public function setLog( PsrLogger $log ) {
+        $this->log = $log;
+    }
+
+    public function getLog() {
+        if (!$this->log) {
+            $this->log = new PsrNullLogger;
+        }
+
+        return $this->log;
     }
 
     public function setConfig( array $config ) {
@@ -65,6 +81,10 @@ class Application {
             );
         }
 
+        $this->debug( function( $app ) use ( $name, $service ) {
+            $app->getLog()->debug( "Set service '{$name}' to " . get_class( $service ) );
+        } );
+
         $this->services[ $name ] = $service;
     }
 
@@ -86,7 +106,16 @@ class Application {
 
         $stage = array_shift( $stages );
 
+        $this->debug( function( $app ) use ( $stage ) {
+            $app->getLog()->debug( "Executing stage: " . get_class( $stage ) );
+        } );
+
         $result = $stage->execute( $this, $this->request, $this->response );
+
+        $this->debug( function( $app ) use ( $stage, $result ) {
+            $msg = 'Stage ' . get_class( $stage ) . ' returned: ' . var_export( $result, true );
+            $app->getLog()->debug( $msg );
+        } );
 
         if ( $result instanceof Stage ) {
             array_unshift( $stages, $result );
@@ -109,6 +138,12 @@ class Application {
         return clone $this->defaultResponse;
     }
 
+    protected function debug( \Closure $closure ) {
+        $app = $this;
+        if ( $this->getConfig('debug') ) {
+            $closure( $app );
+        }
+    }
 }
 
 

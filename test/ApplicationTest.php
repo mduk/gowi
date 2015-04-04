@@ -2,8 +2,11 @@
 
 namespace Mduk\Gowi;
 
+use Psr\Log\NullLogger as PsrNullLogger;
+
 use Mduk\Gowi\Application;
 use Mduk\Gowi\Application\Stage;
+use Mduk\Gowi\Application\Stage\Stub as StubStage;
 use Mduk\Gowi\Http\Request;
 use Mduk\Gowi\Http\Response;
 
@@ -77,8 +80,61 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
             "Didn't get the expected service back" );
     }
 
+	public function testLog() {
+		$app = new Application('/tmp');
+
+		$this->assertInstanceOf( '\\Psr\\Log\\NullLogger', $app->getLog(),
+			"getLog should return a Psr NullLogger");
+
+		$log = new ArrayLogger;
+		$app->setLog( $log );
+
+		$this->assertInstanceOf( '\\Psr\\Log\\LoggerInterface', $app->getLog(),
+			"getLog should return a Psr LoggerInterface");
+	}
+
+	public function testDebugLogging_DebugOff() {
+		$this->assertDebugLog( false, 0,
+			"Debug off should yeild no debug log messages" );
+	}
+
+	public function testDebugLogging_DebugOn() {
+		$this->assertDebugLog( true, 3,
+			"Debug on should yeild 3 debug log messages" );
+	}
+
+	public function assertDebugLog( $debug, $msgCount, $message ) {
+		$log = new ArrayLogger;
+		$app = new Application('/tmp');
+		$app->setConfig( [ 'debug' => $debug ] );
+		$app->setLog( $log );
+
+		$app->addStage( new StubStage( function( $app, $req, $res ) {
+			$app->setService( 'foo', new \stdClass );
+			return $res;
+		} ) );
+
+		$app->run();
+
+		$this->assertCount( $msgCount, $log->messages, $message );
+	}
+
     protected function mockStage() {
         return $this->getMock( '\\Mduk\\Gowi\\Application\\Stage' );
     }
+}
+
+class ArrayLogger extends \Psr\Log\AbstractLogger {
+
+	public $messages = [];
+
+	public function log( $level, $message, array $context=[] ) {
+		$this->messages[] = [
+			'level' => $level,
+			'message' => $message,
+			'context' => $context
+		];
+	}
+
 }
 
