@@ -5,8 +5,6 @@ namespace Mduk\Gowi;
 use Psr\Log\LoggerInterface as PsrLogger;
 use Psr\Log\NullLogger as PsrNullLogger;
 
-use Mduk\Gowi\Application\Exception;
-
 use Mduk\Gowi\Application\Stage;
 
 use Mduk\Gowi\Http\Request;
@@ -64,9 +62,9 @@ class Application {
         }
 
         if ( !isset( $this->config[ $key ] ) ) {
-            throw new Exception(
+            throw new Application\Exception(
                 "Invalid config key: {$key}",
-                Exception::INVALID_CONFIG_KEY
+                Application\Exception::INVALID_CONFIG_KEY
             );
         }
 
