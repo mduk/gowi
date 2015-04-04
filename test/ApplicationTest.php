@@ -19,7 +19,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
         $stage2 = $this->mockStage();
         $stage2->expects( $this->once() )->method( 'execute' );
 
-        $app = new Application;
+        $app = new Application('/tmp');
         $app->addStage( $stage1 );
         $app->addStage( $stage2 );
         $app->run();
@@ -35,7 +35,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
             ->method( 'execute' )
             ->will( $this->returnValue( $stage1 ) );
 
-        $app = new Application;
+        $app = new Application('/tmp');
         $app->addStage( $stage2 );
         $app->run();
     }
@@ -50,28 +50,28 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
         $stage2->expects( $this->never() )
             ->method( 'execute' );
 
-        $app = new Application;
+        $app = new Application('/tmp');
         $app->addStage( $stage1 );
         $app->addStage( $stage2 );
         $app->run();
     }
 
     public function testConfig() {
-        $app = new Application;
+        $app = new Application('/tmp');
         $app->setConfig( array( 'foo' => 'bar' ) );
         $this->assertEquals( 'bar', $app->getConfig( 'foo' ) );
     }
 
     public function testGetConfig_InvalidKey() {
         $this->setExpectedException( '\\Mduk\\Gowi\\Application\\Exception' );
-        $app = new Application;
+        $app = new Application('/tmp');
         $app->getConfig( 'foo' );
     }
 
     public function testServices() {
         $service = (object) [ 'foo' => 'bar' ];
-        $app = new Application;
-        $app->registerService( 'foo', $service );
+        $app = new Application('/tmp');
+        $app->setService( 'foo', $service );
 
         $this->assertEquals( $service, $app->getService( 'foo' ),
             "Didn't get the expected service back" );

@@ -68,7 +68,7 @@ EOF;
     public function testRequiredUnreadable() {
         try {
             $config = new Config( '/tmp/file.json', [ 'required' => true ] );
-            $config->execute( new Application, new Request, new Response );
+            $config->execute( new Application('/tmp'), new Request, new Response );
         }
         catch ( Config\Exception $e ) {
             $this->assertEquals( Config\Exception::FILE_UNREADABLE, $e->getCode(),
@@ -80,7 +80,7 @@ EOF;
         file_put_contents( '/tmp/file.ext', 'nonsense' );
         try {
             $config = new Config( '/tmp/file.ext' );
-            $config->execute( new Application, new Request, new Response );
+            $config->execute( new Application('/tmp'), new Request, new Response );
         }
         catch ( Config\Exception $e ) {
             $this->assertEquals( Config\Exception::UNKNOWN_TYPE, $e->getCode(),
@@ -94,7 +94,7 @@ EOF;
         $filename = "/tmp/config.json";
         file_put_contents( $filename, $file );
 
-        $app = new Application;
+        $app = new Application('/tmp');
         $app->addStage( new Config( $filename, [ 'namespace' => 'ns' ] ) );
         $app->run();
 
@@ -114,14 +114,14 @@ EOF;
 
     public function testMissingOptionalFile() {
         $config = new Config( '/tmp/foo.xml', [ 'required' => false ] );
-        $this->assertNull( $config->execute( new Application, new Request, new Response ) );
+        $this->assertNull( $config->execute( new Application('/tmp'), new Request, new Response ) );
     }
 
     protected function assertAppIsConfigured( $file, $ext ) {
         $filename = "/tmp/config.{$ext}";
         file_put_contents( $filename, $file );
 
-        $app = new Application;
+        $app = new Application('/tmp');
         $app->addStage( new Config( $filename ) );
         $app->run();
 
