@@ -60,7 +60,7 @@ Now for the obligatory super-simplified example of everything in one file, no do
      * It changes user names and the form's on a page somewhere else.
      */
     
-    $app = new Application;
+    $app = new Application('/var/www');
     
     /**
      * If we called $app->run() now, it wouldn't achieve much since it has nothing to do.
@@ -143,31 +143,6 @@ Now for the obligatory super-simplified example of everything in one file, no do
     
     $app->run()->respond();
  
-# Feature Flagging
-
-Stages read Feature Flags from Application configuration and initialise Services accordingly.
-
-    <?php // feature_flags.php
-
-    class UserService {}
-    class MagicalUserService extends UserService {}
-
-    $app = new Application;
-    $app->setConfig( 'feature_flags', array( 'more_magic' => false ) );
-
-    $app->addStage( new StubStage( function( Application $app, Request $req, Response $res ) {
-        $flag = $app->getConfig( 'feature_flags' )[ 'more_magic' ];
-
-        if ( $flag ) {
-            $service = new MagicalUserService;
-        }
-        else {
-            $service = new UserService;
-        }
-
-        $app->registerService( '' );
-    } ) );
-
 # Dev Environment & Building
 
 A development environment is provided in the `cookbook/` directory, I'm practicing chef.
