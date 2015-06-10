@@ -63,7 +63,7 @@ class File implements Stage {
 
             case 'yaml':
             case 'yml':
-                $config = YamlParser::parse( $this->path );
+                $config = YamlParser::parse( file_get_contents( $this->path ) );
                 break;
 
             default:
