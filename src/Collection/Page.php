@@ -30,5 +30,9 @@ class Page extends Collection {
   public function nextPage() {
     return $this->collection->page( $this->pageNum + 1, $this->limit );
   }
+
+  public function previousPage() {
+    return $this->collection->page( $this->pageNum - 1, $this->limit );
+  }
 }
 

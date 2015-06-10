@@ -6,6 +6,8 @@ use Mduk\Gowi\Collection;
 
 class Paged extends Collection {
 
+  protected $pages = [];
+
   /**
    * Retrieve one page of objects, if a page extends beyond
    * the end of the collection, the last page is cut short.
@@ -15,15 +17,20 @@ class Paged extends Collection {
    * @return array Objects
    */
   public function page( $page, $limit = 10 ) {
-  	$offset = $page * $limit;
-  	$end = $offset + $limit;
+    $pageKey = "{$limit}:{$page}";
+    if ( !isset( $this->pages[ $pageKey ] ) ) {
+      $offset = $page * $limit;
+      $end = $offset + $limit;
 
-  	if ( $end > $this->count() ) {
-  		$difference = $end - $this->count();
-  		$limit = $limit - $difference;
-  	}
+      if ( $end > $this->count() ) {
+        $difference = $end - $this->count();
+        $limit = $limit - $difference;
+      }
 
-    return new Page( $this, $page, $offset, $limit );
+      $this->pages[ $pageKey ] = new Page( $this, $page, $offset, $limit );
+    }
+
+    return $this->pages[ $pageKey ];
   }
 
   /**
