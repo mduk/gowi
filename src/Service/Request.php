@@ -8,6 +8,7 @@ class Request {
   protected $service;
   protected $call;
   protected $payload;
+  protected $parameters = [];
 
   public function __construct( Service $service, $call ) {
     $this->service = $service;
@@ -35,6 +36,12 @@ class Request {
   }
 
   public function getParameter( $key ) {
+    if ( !isset( $this->parameters[ $key ] ) ) {
+      throw new Request\Exception(
+        "Invalid Service Request parmater: {$key}"
+      );
+    }
+
     return $this->parameters[ $key ];
   }
 
