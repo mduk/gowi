@@ -5,6 +5,7 @@ namespace Mduk\Gowi\Collection;
 use Mduk\Gowi\Collection;
 
 class Paged extends Collection {
+
   /**
    * Retrieve one page of objects, if a page extends beyond
    * the end of the collection, the last page is cut short.
@@ -22,7 +23,7 @@ class Paged extends Collection {
   		$limit = $limit - $difference;
   	}
 
-  	return $this->get( $offset, $limit );
+    return new Page( $this, $page, $offset, $limit );
   }
 
   /**
