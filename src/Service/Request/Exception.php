@@ -1,6 +1,6 @@
 <?php
 
-namespace Mduk\Service\Request;
+namespace Mduk\Gowi\Service\Request;
 
 class Exception extends \Exception {
   //
