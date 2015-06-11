@@ -17,6 +17,9 @@ class Paged extends Collection {
    * @return array Objects
    */
   public function page( $page, $limit = 10 ) {
+    if ( $page <= 0 ) {
+      throw new Paged\Exception( "Invalid page: {$page}" );
+    }
 
     $pageKey = "{$limit}:{$page}";
     if ( !isset( $this->pages[ $pageKey ] ) ) {
@@ -26,6 +29,10 @@ class Paged extends Collection {
       if ( $end > $this->count() ) {
         $difference = $end - $this->count();
         $limit = $limit - $difference;
+      }
+
+      if ( $offset > $this->count() ) {
+        throw new Paged\Exception( "Invalid page: {$page}" );
       }
 
       $this->pages[ $pageKey ] = new Page( $this, $page, $offset, $limit );
