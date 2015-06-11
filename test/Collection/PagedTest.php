@@ -25,7 +25,7 @@ class PagedTest extends \PHPUnit_Framework_TestCase {
       31,32,33,34,35,36,37
     ) );
 
-    $pageZero = $c->page( 0 );
+    $pageZero = $c->page( 1 );
     $this->assertEquals( array( 1,2,3,4,5,6,7,8,9,10 ), $pageZero->getAll() );
 
     $pageOne = $pageZero->nextPage();
@@ -37,12 +37,12 @@ class PagedTest extends \PHPUnit_Framework_TestCase {
     $this->assertTrue( $pageOne === $pageTwo->previousPage(),
       "Page instances should be reused" );
 
-    $this->assertEquals( array( 31,32,33,34,35,36,37 ), $c->page( 3 )->getAll() );
+    $this->assertEquals( array( 31,32,33,34,35,36,37 ), $c->page( 4 )->getAll() );
 
-    $this->assertEquals( array( 1,2,3,4,5 ), $c->page( 0, 5 )->getAll() );
-    $this->assertEquals( array( 6,7,8,9,10 ), $c->page( 1, 5 )->getAll() );
+    $this->assertEquals( array( 1,2,3,4,5 ), $c->page( 1, 5 )->getAll() );
+    $this->assertEquals( array( 6,7,8,9,10 ), $c->page( 2, 5 )->getAll() );
 
-    $this->assertEquals( array( 31,32,33,34,35,36,37 ), $c->page( 1, 30 )->getAll() );
+    $this->assertEquals( array( 31,32,33,34,35,36,37 ), $c->page( 2, 30 )->getAll() );
   }
 
   public function testCalculatePage() {

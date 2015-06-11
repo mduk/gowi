@@ -17,9 +17,10 @@ class Paged extends Collection {
    * @return array Objects
    */
   public function page( $page, $limit = 10 ) {
+
     $pageKey = "{$limit}:{$page}";
     if ( !isset( $this->pages[ $pageKey ] ) ) {
-      $offset = $page * $limit;
+      $offset = ( $page - 1 ) * $limit;
       $end = $offset + $limit;
 
       if ( $end > $this->count() ) {
