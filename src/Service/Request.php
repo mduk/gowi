@@ -7,12 +7,18 @@ use Mduk\Gowi\Service;
 class Request {
   protected $service;
   protected $call;
+  protected $requiredParameters = [];
   protected $payload;
   protected $parameters = [];
 
-  public function __construct( Service $service, $call ) {
+  public function __construct( Service $service, $call, array $requiredParameters = [] ) {
     $this->service = $service;
     $this->call = $call;
+    $this->requiredParameters = $requiredParameters;
+  }
+
+  public function getRequiredParameters() {
+    return $this->retuiredParameters;
   }
 
   public function setParameter( $key, $value ) {
