@@ -18,7 +18,7 @@ class Request {
   }
 
   public function getRequiredParameters() {
-    return $this->retuiredParameters;
+    return $this->requiredParameters;
   }
 
   public function setParameter( $key, $value ) {
