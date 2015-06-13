@@ -14,7 +14,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 
     public function testNoRoutes() {
         $app = new Application('/tmp');
-        $app->setConfig( [ 'router' => [] ] );
+        $app->setConfig( 'router', [] );
 
 		$request = Request::create( 'http://localhost/foo' );
         $response = new Response;
@@ -27,7 +27,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 
     public function testNoMatches() {
         $app = new Application('/tmp');
-        $app->setConfig( [
+        $app->setConfigArray( [
             'router' => [
                 'nomatch' => [
                     'path' => '/nomatch',
@@ -47,7 +47,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 
     public function testStageNotFound() {
         $app = new Application('/tmp');
-        $app->setConfig([
+        $app->setConfigArray([
             'router' => [
                 'myroute' => [
                     'path' => '/foo',
@@ -81,7 +81,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 		$response = new Response;
 
         $app = new Application('/tmp');
-		$app->setConfig( [
+		$app->setConfigArray( [
 			'router' => [
 				'foo' => [
 					'path' => '/foo/{bar}',
@@ -104,7 +104,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNamedRouter() {
 		$app = new Application('/tmp');
-		$app->setConfig( [
+		$app->setConfigArray( [
 			'router' => [
 				'public' => [
 					'foo' => [

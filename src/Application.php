@@ -5,6 +5,9 @@ namespace Mduk\Gowi;
 use Psr\Log\LoggerInterface as PsrLogger;
 use Psr\Log\NullLogger as PsrNullLogger;
 
+use Mduk\Dot;
+use Mduk\Dot\Exception\InvalidKey as DotInvalidKeyException;
+
 use Mduk\Gowi\Application\Stage;
 
 use Mduk\Gowi\Http\Request;
@@ -16,13 +19,14 @@ class Application {
     protected $stages = [];
     protected $log;
     protected $services = [];
-    protected $config = [ 'debug' => false ];
+    protected $config;
     protected $request;
     protected $response;
     protected $defaultResponse;
 
     public function __construct( $baseDir ) {
         $this->baseDir = $baseDir;
+        $this->config = new Dot( [ 'debug' => false ] );
     }
 
     public function getBaseDir() {
@@ -52,23 +56,32 @@ class Application {
         return $this->log;
     }
 
-    public function setConfig( array $config ) {
-        $this->config = array_merge( $this->config, $config );
+    public function setConfig( $key, $value ) {
+        $this->config->set( $key, $value );
     }
 
-    public function getConfig( $key = null ) {
-        if ( !$key ) {
-            return $this->config;
-        }
+    public function setConfigArray( array $array ) {
+        $newConfig = array_merge( $this->config->getArray(), $array );
+        $this->config = new Dot( $newConfig );
+    }
 
-        if ( !isset( $this->config[ $key ] ) ) {
-            throw new Application\Exception(
-                "Invalid config key: {$key}",
-                Application\Exception::INVALID_CONFIG_KEY
-            );
-        }
+    public function getConfig( $key, $default = null ) {
+        try {
+            return $this->config->get( $key );
+        } catch ( DotInvalidKeyException $e ) {
+            if ( $default === null) {
+                throw new Application\Exception(
+                    "Invalid config key: {$key}",
+                    Application\Exception::INVALID_CONFIG_KEY
+                );
+            }
 
-        return $this->config[ $key ];
+            return $default;
+        }
+    }
+
+    public function getConfigArray() {
+        return $this->config->getArray();
     }
 
     public function setService( $name, $service ) {

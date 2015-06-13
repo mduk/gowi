@@ -74,10 +74,10 @@ class File implements Stage {
         }
 
         if ( $this->namespace ) {
-            $app->setConfig( [ $this->namespace => $config ] );
+            $app->setConfigArray( [ $this->namespace => $config ] );
         }
         else {
-            $app->setConfig( $config );
+            $app->setConfigArray( $config );
         }
     }
 }

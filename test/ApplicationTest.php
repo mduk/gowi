@@ -61,14 +61,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 
     public function testConfig() {
         $app = new Application('/tmp');
-        $app->setConfig( array( 'foo' => 'bar' ) );
+        $app->setConfig( 'foo', 'bar' );
         $this->assertEquals( 'bar', $app->getConfig( 'foo' ) );
     }
 
-    public function testGetConfig_InvalidKey() {
+    public function testGetConfig_InvalidKey_NoDefault() {
         $this->setExpectedException( '\\Mduk\\Gowi\\Application\\Exception' );
         $app = new Application('/tmp');
         $app->getConfig( 'foo' );
+    }
+
+    public function testGetConfig_InvalidKey_WithDefault() {
+        $app = new Application('/tmp');
+        $this->assertEquals( 'bar', $app->getConfig( 'foo', 'bar' ) );
     }
 
     public function testServices() {
@@ -106,7 +111,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 	public function assertDebugLog( $debug, $msgCount, $message ) {
 		$log = new ArrayLogger;
 		$app = new Application('/tmp');
-		$app->setConfig( [ 'debug' => $debug ] );
+		$app->setConfig( 'debug', $debug );
 		$app->setLog( $log );
 
 		$app->addStage( new StubStage( function( $app, $req, $res ) {

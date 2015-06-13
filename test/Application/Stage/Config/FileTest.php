@@ -114,7 +114,7 @@ EOF;
             'debug' => false
         );
 
-        $this->assertEquals( $config, $app->getConfig() );
+        $this->assertEquals( $config, $app->getConfigArray() );
 
         unlink( $filename );
     }
@@ -139,7 +139,7 @@ EOF;
             'debug' => false
         );
 
-        $this->assertEquals( $config, $app->getConfig() );
+        $this->assertEquals( $config, $app->getConfigArray() );
 
         unlink( $filename );
     }

@@ -10,7 +10,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase {
 
     public function setUp() {
         $this->app = new Application('/tmp');
-        $this->app->setConfig( [
+        $this->app->setConfigArray( [
             'router' => [
                 'one' => [
                     'path' => '/one',
