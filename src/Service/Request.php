@@ -51,6 +51,10 @@ class Request {
     return $this->parameters[ $key ];
   }
 
+  public function getParameters() {
+    return $this->parameters;
+  }
+
   public function getPayload() {
     return $this->payload;
   }
