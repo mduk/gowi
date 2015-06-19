@@ -35,6 +35,7 @@ class Request {
 
   public function setPayload( $payload ) {
     $this->payload = $payload;
+    return $this;
   }
 
   public function getCall() {

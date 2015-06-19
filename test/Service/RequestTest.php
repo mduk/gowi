@@ -13,5 +13,15 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
       "getParameters should return an array of all parameters" );
   }
 
+  public function testFluent() {
+    $r = new Request( new Shim, 'my_call' );
+
+    $this->assertEquals( $r, $r->setParameter( 'foo', 'bar' ),
+      "setParameter should be fluent" );
+
+    $this->assertEquals( $r, $r->setPayload( 'foo' ),
+      "setPayload should be fluent" );
+  }
+
 }
 
