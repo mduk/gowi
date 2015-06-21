@@ -2,10 +2,13 @@
 
 namespace Mduk\Gowi;
 
+use \ArrayAccess;
+
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 
-class Factory implements LoggerAwareInterface {
+class Factory implements LoggerAwareInterface,
+                         ArrayAccess {
 
   protected $factories = [];
   protected $logger;
@@ -37,6 +40,22 @@ class Factory implements LoggerAwareInterface {
 
   public function setLogger( LoggerInterface $logger ) {
     $this->logger = $logger;
+  }
+
+  public function offsetExists( $factory ) {
+    return isset( $this->factories[ $factory ] );
+  }
+
+  public function offsetGet( $factory ) {
+  	return $this->factories[ $factory ]();
+  }
+
+  public function offsetSet( $name, $factory ) {
+  	$this->factories[ $name ] = $factory;
+  }
+
+  public function offsetUnset( $factory ) {
+    unset( $this->factories[ $factory ] );
   }
 
 }
