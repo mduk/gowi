@@ -17,8 +17,16 @@ class Shim implements Service {
   }
 
   public function describe() {
+    $calls = [];
+    foreach ( $this->calls as $call => $spec ) {
+      $calls[ $call ] => [
+        'description' => $spec['description']
+      ];
+    }
+
     return [
       'description' => $this->description,
+      'calls' => $calls
     ];
   }
 
@@ -61,10 +69,11 @@ class Shim implements Service {
     return $response;
   }
 
-  public function setCall( $call, $callback, $arguments ) {
+  public function setCall( $call, $callback, $arguments, $description ) {
     $this->calls[ $call ] = (object) [
       'callback' => $callback,
-      'arguments' => $arguments
+      'arguments' => $arguments,
+      'description' => $description
     ];
   }
 
