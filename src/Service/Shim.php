@@ -9,6 +9,19 @@ use Mduk\Gowi\Service\Request as ServiceRequest;
 use Mduk\Gowi\Service\Response as ServiceResponse;
 
 class Shim implements Service {
+
+  protected $description;
+
+  public function __construct( $description ) {
+    $this->description = $description;
+  }
+
+  public function describe() {
+    return [
+      'description' => $this->description,
+    ];
+  }
+
   public function request( $call ) {
     return new ServiceRequest( $this, $call );
   }
