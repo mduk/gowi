@@ -5,7 +5,7 @@ namespace Mduk\Gowi\Service;
 class RequestTest extends \PHPUnit_Framework_TestCase {
 
   public function testGetParameters() {
-    $r = new Request( new Shim, 'my_call' );
+    $r = new Request( new Shim('MyService'), 'my_call' );
     $r->setParameter( 'foo', 'oof' );
     $r->setParameter( 'bar', 'rab' );
 
@@ -14,7 +14,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testFluent() {
-    $r = new Request( new Shim, 'my_call' );
+    $r = new Request( new Shim( 'MyService' ), 'my_call' );
 
     $this->assertEquals( $r, $r->setParameter( 'foo', 'bar' ),
       "setParameter should be fluent" );
