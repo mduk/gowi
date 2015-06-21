@@ -20,7 +20,7 @@ class Shim implements Service {
     $calls = [];
     foreach ( $this->calls as $call => $spec ) {
       $calls[ $call ] = [
-        'description' => $spec['description']
+        'description' => $spec->description
       ];
     }
 
