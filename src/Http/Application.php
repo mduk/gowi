@@ -1,6 +1,6 @@
 <?php
 
-namespace Mduk\Gowi;
+namespace Mduk\Gowi\Http;
 
 use Psr\Log\LoggerInterface as PsrLogger;
 use Psr\Log\NullLogger as PsrNullLogger;
@@ -8,10 +8,7 @@ use Psr\Log\NullLogger as PsrNullLogger;
 use Mduk\Dot;
 use Mduk\Dot\Exception\InvalidKey as DotInvalidKeyException;
 
-use Mduk\Gowi\Application\Stage;
-
-use Mduk\Gowi\Http\Request;
-use Mduk\Gowi\Http\Response;
+use Mduk\Gowi\Http\Application\Stage;
 
 class Application {
 

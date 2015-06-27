@@ -1,12 +1,12 @@
 <?php
 
-namespace Mduk\Gowi\Application\Stage\Config;
+namespace Mduk\Gowi\Http\Application\Stage\Config;
 
-use Mduk\Gowi\Application;
+use Mduk\Gowi\Http\Application;
 use Mduk\Gowi\Http\Request;
 use Mduk\Gowi\Http\Response;
 
-use Mduk\Gowi\Application\Stage;
+use Mduk\Gowi\Http\Application\Stage;
 
 use Zend\Config\Config as ZendConfig;
 use Zend\Config\Reader\Ini as IniReader;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mduk\Gowi\Application\Stage\Config\File;
+namespace Mduk\Gowi\Http\Application\Stage\Config\File;
 
 class Exception extends \Exception {
     const UNKNOWN_TYPE = 1;

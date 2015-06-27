@@ -1,11 +1,11 @@
 <?php
 
-namespace Mduk\Gowi\Application\Stage;
+namespace Mduk\Gowi\Http\Application\Stage;
 
-use Mduk\Gowi\Application\Stage;
+use Mduk\Gowi\Http\Application\Stage;
 
-use Mduk\Gowi\Application;
-use Mduk\Gowi\Application\Exception;
+use Mduk\Gowi\Http\Application;
+use Mduk\Gowi\Http\Application\Exception;
 
 use \Mduk\Gowi\Http\Request;
 use \Mduk\Gowi\Http\Response;
@@ -68,7 +68,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
             $this->fail('The router should have thrown a CANNOT_RESOLVE_STAGE exception');
         }
         catch (\Exception $e) {
-            $this->assertEquals('Mduk\\Gowi\\Application\\Stage\\Router\\Exception', get_class($e),
+            $this->assertEquals('Mduk\\Gowi\\Http\\Application\\Stage\\Router\\Exception', get_class($e),
                 "Exception should have been a Router\\Exception");
 
             $this->assertEquals(Router\Exception::CANNOT_RESOLVE_STAGE, $e->getCode(),
@@ -86,7 +86,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 				'foo' => [
 					'path' => '/foo/{bar}',
 					'attributes' => [
-						'stage' => 'Mduk\\Gowi\\Application\\Stage\\SomeStubStage'
+						'stage' => 'Mduk\\Gowi\\Http\\Application\\Stage\\SomeStubStage'
 					]
 				]
 			]
@@ -95,10 +95,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
         $routerStage = new Router;
         $result = $routerStage->execute( $app, $request, $response );
 
-        $this->assertTrue( $result instanceof \Mduk\Gowi\Application\Stage,
+        $this->assertTrue( $result instanceof \Mduk\Gowi\Http\Application\Stage,
             "Result should have been a stage" );
 
-		$this->assertEquals( 'Mduk\\Gowi\\Application\\Stage\\SomeStubStage', $request->attributes->get('stage'),
+		$this->assertEquals( 'Mduk\\Gowi\\Http\\Application\\Stage\\SomeStubStage', $request->attributes->get('stage'),
 			"Request should now have a 'stage' attribute." );
     }
 
@@ -110,7 +110,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 					'foo' => [
 						'path' => '/foo/{foo}',
 						'attributes' => [
-							'stage' => 'Mduk\\Gowi\\Application\\Stage\\SomeStubStage'
+							'stage' => 'Mduk\\Gowi\\Http\\Application\\Stage\\SomeStubStage'
 						]
 					]
 				],
@@ -118,7 +118,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 					'bar' => [
 						'path' => '/bar/{bar}',
 						'attributes' => [
-							'stage' => 'Mduk\\Gowi\\Application\\Stage\\AnotherStubStage'
+							'stage' => 'Mduk\\Gowi\\Http\\Application\\Stage\\AnotherStubStage'
 						]
 					]
 				]

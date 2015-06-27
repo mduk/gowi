@@ -1,8 +1,8 @@
 <?php
 
-namespace Mduk\Gowi\Application;
+namespace Mduk\Gowi\Http\Application;
 
-use Mduk\Gowi\Application;
+use Mduk\Gowi\Http\Application;
 
 use Mduk\Gowi\Http\Request;
 use Mduk\Gowi\Http\Response;

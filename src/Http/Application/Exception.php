@@ -1,6 +1,6 @@
 <?php
 
-namespace Mduk\Gowi\Application;
+namespace Mduk\Gowi\Http\Application;
 
 use Exception as StdException;
 

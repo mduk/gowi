@@ -1,9 +1,9 @@
 <?php
 
-namespace Mduk\Gowi\Application\Stage;
+namespace Mduk\Gowi\Http\Application\Stage;
 
-use Mduk\Gowi\Application;
-use Mduk\Gowi\Application\Stage;
+use Mduk\Gowi\Http\Application;
+use Mduk\Gowi\Http\Application\Stage;
 
 use Mduk\Gowi\Http\Request;
 use Mduk\Gowi\Http\Response;

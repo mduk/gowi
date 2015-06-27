@@ -1,14 +1,12 @@
 <?php
 
-namespace Mduk\Gowi;
+namespace Mduk\Gowi\Http;
 
 use Psr\Log\NullLogger as PsrNullLogger;
 
-use Mduk\Gowi\Application;
-use Mduk\Gowi\Application\Stage;
-use Mduk\Gowi\Application\Stage\Stub as StubStage;
-use Mduk\Gowi\Http\Request;
-use Mduk\Gowi\Http\Response;
+use Mduk\Gowi\Http\Application;
+use Mduk\Gowi\Http\Application\Stage;
+use Mduk\Gowi\Http\Application\Stage\Stub as StubStage;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -66,7 +64,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetConfig_InvalidKey_NoDefault() {
-        $this->setExpectedException( '\\Mduk\\Gowi\\Application\\Exception' );
+        $this->setExpectedException( '\\Mduk\\Gowi\\Http\\Application\\Exception' );
         $app = new Application('/tmp');
         $app->getConfig( 'foo' );
     }
@@ -125,7 +123,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 	}
 
     protected function mockStage() {
-        return $this->getMock( '\\Mduk\\Gowi\\Application\\Stage' );
+        return $this->getMock( '\\Mduk\\Gowi\\Http\\Application\\Stage' );
     }
 }
 

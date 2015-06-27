@@ -1,6 +1,6 @@
 <?php
 
-namespace Mduk\Gowi\Application\Stage\Redirect;
+namespace Mduk\Gowi\Http\Application\Stage\Redirect;
 
 class Exception extends \Exception {
     const LOCATION_REQUIRED = 1;

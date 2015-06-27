@@ -1,11 +1,11 @@
 <?php
 
-namespace Mduk\Gowi\Application\Stage\Config;
+namespace Mduk\Gowi\Http\Application\Stage\Config;
 
-use Mduk\Gowi\Application;
+use Mduk\Gowi\Http\Application\Stage\Config;
+use Mduk\Gowi\Http\Application;
 use Mduk\Gowi\Http\Request;
 use Mduk\Gowi\Http\Response;
-use Mduk\Gowi\Application\Stage\Config;
 
 class FileTest extends \PHPUnit_Framework_TestCase {
 
@@ -76,7 +76,7 @@ EOF;
             $config->execute( new Application('/tmp'), new Request, new Response );
         }
         catch ( \Exception $e ) {
-			$this->assertInstanceOf( 'Mduk\\Gowi\\Application\\Stage\\Config\\File\\Exception', $e,
+			$this->assertInstanceOf( 'Mduk\\Gowi\\Http\\Application\\Stage\\Config\\File\\Exception', $e,
 				"Stage should have thrown an Application\\Stage\\Config\\File\\Exception." );
             $this->assertEquals( File\Exception::FILE_UNREADABLE, $e->getCode(),
                 "Exception code should have been File\\Exception::FILE_UNREADABLE" );

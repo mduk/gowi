@@ -1,8 +1,8 @@
 <?php
 
-namespace Mduk\Gowi\Application\Stage;
+namespace Mduk\Gowi\Http\Application\Stage;
 
-use Mduk\Gowi\Application;
+use Mduk\Gowi\Http\Application;
 use Mduk\Gowi\Http\Request;
 
 class RedirectTest extends \PHPUnit_Framework_TestCase {
@@ -15,14 +15,14 @@ class RedirectTest extends \PHPUnit_Framework_TestCase {
                 'one' => [
                     'path' => '/one',
                     'attributes' => [
-                        'stage' => '\\Mduk\\Gowi\\Application\\Stage\\Redirect',
+                        'stage' => '\\Mduk\\Gowi\\Http\\Application\\Stage\\Redirect',
                         'redirect_location' => 'http://one.example.com/'
                     ]
                 ],
                 'two' => [
                     'path' => '/two',
                     'attributes' => [
-                        'stage' => '\\Mduk\\Gowi\\Application\\Stage\\Redirect',
+                        'stage' => '\\Mduk\\Gowi\\Http\\Application\\Stage\\Redirect',
                         'redirect_location' => 'http://two.example.com/',
                         'redirect_code' => 301
                     ]
@@ -30,7 +30,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase {
                 'three' => [
                     'path' => '/three',
                     'attributes' => [
-                        'stage' => '\\Mduk\\Gowi\\Application\\Stage\\Redirect',
+                        'stage' => '\\Mduk\\Gowi\\Http\\Application\\Stage\\Redirect',
                         'redirect_location' => 'http://three.example.com/',
                         'redirect_code' => 302
                     ]
@@ -38,7 +38,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase {
                 'four' => [
                     'path' => '/four',
                     'attributes' => [
-                        'stage' => '\\Mduk\\Gowi\\Application\\Stage\\Redirect',
+                        'stage' => '\\Mduk\\Gowi\\Http\\Application\\Stage\\Redirect',
                         'redirect_location' => 'http://four.example.com/',
                         'redirect_code' => 303
                     ]
@@ -46,7 +46,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase {
                 'five' => [
                     'path' => '/five',
                     'attributes' => [
-                        'stage' => '\\Mduk\\Gowi\\Application\\Stage\\Redirect',
+                        'stage' => '\\Mduk\\Gowi\\Http\\Application\\Stage\\Redirect',
                         'redirect_location' => 'http://five.example.com/',
                         'redirect_code' => 307
                     ]
@@ -54,7 +54,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase {
                 'six' => [
                     'path' => '/six',
                     'attributes' => [
-                        'stage' => '\\Mduk\\Gowi\\Application\\Stage\\Redirect',
+                        'stage' => '\\Mduk\\Gowi\\Http\\Application\\Stage\\Redirect',
                         'redirect_location' => 'http://five.example.com/',
                         'redirect_code' => 200
                     ]
@@ -62,7 +62,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase {
                 'seven' => [
                     'path' => '/seven',
                     'attributes' => [
-                        'stage' => '\\Mduk\\Gowi\\Application\\Stage\\Redirect',
+                        'stage' => '\\Mduk\\Gowi\\Http\\Application\\Stage\\Redirect',
                     ]
                 ]
             ]
@@ -96,7 +96,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase {
             $this->fail( "App should have thrown an exception." );
         }
         catch ( \Exception $e ) {
-            $this->assertInstanceOf( '\\Mduk\\Gowi\\Application\\Stage\\Redirect\\Exception', $e,
+            $this->assertInstanceOf( '\\Mduk\\Gowi\\Http\\Application\\Stage\\Redirect\\Exception', $e,
                 "Should have been a Stage\\Redirect\\Exception" );
 
             $this->assertEquals( Redirect\Exception::INVALID_STATUS_CODE, $e->getCode(),
@@ -110,7 +110,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase {
             $this->fail( "App should have thrown an exception." );
         }
         catch ( \Exception $e ) {
-            $this->assertInstanceOf( '\\Mduk\\Gowi\\Application\\Stage\\Redirect\\Exception', $e,
+            $this->assertInstanceOf( '\\Mduk\\Gowi\\Http\\Application\\Stage\\Redirect\\Exception', $e,
                 "Should have been a Stage\\Redirect\\Exception" );
 
             $this->assertEquals( Redirect\Exception::LOCATION_REQUIRED, $e->getCode(),
