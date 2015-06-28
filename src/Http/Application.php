@@ -4,7 +4,8 @@ namespace Mduk\Gowi\Http;
 
 use Psr\Log\LoggerAwareInterface as PsrLoggerAware;
 use Psr\Log\LoggerInterface as PsrLogger;
-use Psr\Log\NullLogger as PsrNullLogger;
+
+use Mduk\Gowi\Logger\PhpErrorLog as PhpErrorLogger;
 
 use Mduk\Dot;
 use Mduk\Dot\Exception\InvalidKey as DotInvalidKeyException;
@@ -48,7 +49,7 @@ class Application implements PsrLoggerAware {
 
     public function getLogger() {
         if (!$this->log) {
-            $this->log = new PsrNullLogger;
+            $this->log = new PhpErrorLogger;
         }
 
         return $this->log;
