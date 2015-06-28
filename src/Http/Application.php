@@ -57,7 +57,11 @@ class Application implements PsrLoggerAware {
 
     public function setConfig( $key, $value ) {
         $this->debug( function( $app ) use ( $key, $value ) {
-            $this->getLogger()->debug( "Application config update. {$key} => {$value}" );
+            $valueStr = $value;
+            if ( is_object( $value ) ) {
+              $valueStr = get_class( $value );
+            }
+            $this->getLogger()->debug( "Application config update. {$key} => {$valueStr}" );
         } );
 
         $this->config->set( $key, $value );
