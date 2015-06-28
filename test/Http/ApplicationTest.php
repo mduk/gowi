@@ -86,14 +86,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 	public function testLog() {
 		$app = new Application('/tmp');
 
-		$this->assertInstanceOf( '\\Psr\\Log\\NullLogger', $app->getLog(),
-			"getLog should return a Psr NullLogger");
+		$this->assertInstanceOf( '\\Psr\\Log\\NullLogger', $app->getLogger(),
+			"getLogger should return a Psr NullLogger");
 
 		$log = new ArrayLogger;
-		$app->setLog( $log );
+		$app->setLogger( $log );
 
-		$this->assertInstanceOf( '\\Psr\\Log\\LoggerInterface', $app->getLog(),
-			"getLog should return a Psr LoggerInterface");
+		$this->assertInstanceOf( '\\Psr\\Log\\LoggerInterface', $app->getLogger(),
+			"getLogger should return a Psr LoggerInterface");
 	}
 
 	public function testDebugLogging_DebugOff() {
@@ -110,7 +110,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 		$log = new ArrayLogger;
 		$app = new Application('/tmp');
 		$app->setConfig( 'debug', $debug );
-		$app->setLog( $log );
+		$app->setLogger( $log );
 
 		$app->addStage( new StubStage( function( $app, $req, $res ) {
 			$app->setService( 'foo', new \stdClass );

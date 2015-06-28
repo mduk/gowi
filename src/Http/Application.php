@@ -2,6 +2,7 @@
 
 namespace Mduk\Gowi\Http;
 
+use Psr\Log\LoggerAwareInterface as PsrLoggerAware;
 use Psr\Log\LoggerInterface as PsrLogger;
 use Psr\Log\NullLogger as PsrNullLogger;
 
@@ -10,7 +11,7 @@ use Mduk\Dot\Exception\InvalidKey as DotInvalidKeyException;
 
 use Mduk\Gowi\Http\Application\Stage;
 
-class Application {
+class Application implements PsrLoggerAware {
 
     protected $baseDir = '';
     protected $stages = [];
@@ -41,11 +42,11 @@ class Application {
         return $this->execute( $this->stages );
     }
 
-    public function setLog( PsrLogger $log ) {
+    public function setLogger( PsrLogger $log ) {
         $this->log = $log;
     }
 
-    public function getLog() {
+    public function getLogger() {
         if (!$this->log) {
             $this->log = new PsrNullLogger;
         }
@@ -90,7 +91,7 @@ class Application {
         }
 
         $this->debug( function( $app ) use ( $name, $service ) {
-            $app->getLog()->debug( "Set service '{$name}' to " . get_class( $service ) );
+            $app->getLogger()->debug( "Set service '{$name}' to " . get_class( $service ) );
         } );
 
         $this->services[ $name ] = $service;
@@ -115,14 +116,14 @@ class Application {
         $stage = array_shift( $stages );
 
         $this->debug( function( $app ) use ( $stage ) {
-            $app->getLog()->debug( "Executing stage: " . get_class( $stage ) );
+            $app->getLogger()->debug( "Executing stage: " . get_class( $stage ) );
         } );
 
         $result = $stage->execute( $this, $this->request, $this->response );
 
         $this->debug( function( $app ) use ( $stage, $result ) {
             $msg = 'Stage ' . get_class( $stage ) . ' returned: ' . var_export( $result, true );
-            $app->getLog()->debug( $msg );
+            $app->getLogger()->debug( $msg );
         } );
 
         if ( $result instanceof Stage ) {
