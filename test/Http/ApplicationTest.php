@@ -2,8 +2,6 @@
 
 namespace Mduk\Gowi\Http;
 
-use Psr\Log\NullLogger as PsrNullLogger;
-
 use Mduk\Gowi\Http\Application;
 use Mduk\Gowi\Http\Application\Stage;
 use Mduk\Gowi\Http\Application\Stage\Stub as StubStage;

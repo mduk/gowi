@@ -61,6 +61,14 @@ class Request {
   }
 
   public function execute() {
+    foreach ( $this->requiredParameters as $param ) {
+      if ( !isset( $this->parameters[ $param ] ) ) {
+        throw new Request\Exception\RequiredParameterMissing(
+          "Parameter {$param} is required"
+        );
+      }
+    }
+
     return $this->service->execute( $this, new Response( $this ) );
   }
 }

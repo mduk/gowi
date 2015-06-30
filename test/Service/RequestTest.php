@@ -23,5 +23,20 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
       "setPayload should be fluent" );
   }
 
+  public function testRequiredParameterMissing() {
+    $s = new Shim( 'MyService' );
+    $s->setCall( 'my_call', [ $this, 'stubCall' ], [], 'my_call desc' );
+    try {
+      $r = new Request( $s, 'my_call', [ 'my_parameter' ] );
+      $r->execute();
+      $this->fail( "Should have thrown an exception" );
+    }
+    catch ( Request\Exception\RequiredParameterMissing $e ) {}
+  }
+
+  public function stubCall() {
+
+  }
+
 }
 
