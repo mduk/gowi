@@ -86,8 +86,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 	public function testLog() {
 		$app = new Application('/tmp');
 
-		$this->assertInstanceOf( '\\Psr\\Log\\NullLogger', $app->getLogger(),
-			"getLogger should return a Psr NullLogger");
+		$this->assertInstanceOf( '\\Psr\\Log\\LoggerInterface', $app->getLogger(),
+			"getLogger should return a PsrLogger");
 
 		$log = new ArrayLogger;
 		$app->setLogger( $log );
