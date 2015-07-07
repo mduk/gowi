@@ -44,7 +44,8 @@ class Application implements PsrLoggerAware {
           $classes = implode( ', ', array_map( function( $e ) {
             return get_class( $e );
           }, $this->stages ) );
-          $app->getLogger()->debug( "Running Application with stages: {$classes}" );
+
+          return "Running Application with stages: {$classes}";
         } );
 
         return $this->execute( $this->stages );
@@ -65,7 +66,7 @@ class Application implements PsrLoggerAware {
     public function setConfig( $key, $value ) {
         $this->debug( function( $app ) use ( $key, $value ) {
             $valueStr = print_r( $value, true );
-            $this->getLogger()->debug( "Application config update. {$key} => {$valueStr}" );
+            return "Application config update. {$key} => {$valueStr}";
         } );
 
         $this->config->set( $key, $value );
@@ -111,7 +112,7 @@ class Application implements PsrLoggerAware {
         }
 
         $this->debug( function( $app ) use ( $name, $service ) {
-            $app->getLogger()->debug( "Set service '{$name}' to " . get_class( $service ) );
+            return "Set service '{$name}' to " . get_class( $service );
         } );
 
         $this->services[ $name ] = $service;
@@ -136,14 +137,13 @@ class Application implements PsrLoggerAware {
         $stage = array_shift( $stages );
 
         $this->debug( function( $app ) use ( $stage ) {
-            $app->getLogger()->debug( "Executing stage: " . get_class( $stage ) );
+            return "Executing stage: " . get_class( $stage );
         } );
 
         $result = $stage->execute( $this, $this->request, $this->response );
 
         $this->debug( function( $app ) use ( $stage, $result ) {
-            $msg = 'Stage ' . get_class( $stage ) . ' returned: ' . var_export( $result, true );
-            $app->getLogger()->debug( $msg );
+            return 'Stage ' . get_class( $stage ) . ' returned: ' . var_export( $result, true );
         } );
 
         if ( $result instanceof Stage ) {
@@ -174,7 +174,7 @@ class Application implements PsrLoggerAware {
     protected function debug( \Closure $closure ) {
         $app = $this;
         if ( $this->getConfig('debug') ) {
-            $closure( $app );
+            $this->getLogger()->debug( $closure( $app ) );
         }
     }
 }
