@@ -72,6 +72,32 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( 'bar', $app->getConfig( 'foo', 'bar' ) );
     }
 
+    public function testApplyConfigArray() {
+        $app = new Application( '/tmp' );
+        $app->setConfigArray( [
+            'foo' => 'bar',
+            'foo2' => [
+                'bar2' => 'baz'
+            ]
+        ] );
+        $app->applyConfigArray( [
+            'bar' => 'baz',
+            'foo2' => [
+                'foo2' => 'bar',
+                'bar2' => 'qha'
+            ]
+        ] );
+
+        $this->assertEquals( 'qha', $app->getConfig( 'foo2.bar2' ),
+          "foo2.bar2 should have been overwritten" );
+
+        $this->assertEquals( 'bar', $app->getConfig( 'foo2.foo2' ),
+          "foo2.foo2 should have been created" );
+
+        $this->assertEquals( 'bar', $app->getConfig( 'foo' ),
+          "foo should have remained set to \"bar\"" );
+    }
+
     public function testServices() {
         $service = (object) [ 'foo' => 'bar' ];
         $app = new Application('/tmp');

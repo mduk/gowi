@@ -76,6 +76,13 @@ class Application implements PsrLoggerAware {
         $this->config = new Dot( $newConfig );
     }
 
+    public function applyConfigArray( array $array ) {
+      $this->setConfigArray( array_replace_recursive(
+        $this->getConfigArray(),
+        $array
+      ) );
+    }
+
     public function getConfig( $key, $default = null ) {
         try {
             return $this->config->get( $key );
