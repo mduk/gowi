@@ -100,7 +100,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDebugLogging_DebugOn() {
-		$this->assertDebugLog( true, 3,
+		$this->assertDebugLog( true, 4,
 			"Debug on should yeild 3 debug log messages" );
 	}
 

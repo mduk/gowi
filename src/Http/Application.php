@@ -40,6 +40,13 @@ class Application implements PsrLoggerAware {
         $this->request = ( $req ) ?: Request::createFromGlobals();
         $this->response = ( $res ) ?: $this->getDefaultResponse();
 
+        $this->debug( function( $app ) {
+          $classes = implode( ', ', array_map( function( $e ) {
+            return get_class( $e );
+          }, $this->stages ) );
+          $app->getLogger()->debug( "Running Application with stages: {$classes}" );
+        } );
+
         return $this->execute( $this->stages );
     }
 
