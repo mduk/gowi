@@ -129,6 +129,13 @@ class Application implements PsrLoggerAware {
         return $this->services[ $name ];
     }
 
+    public function debugLog( \Closure $closure ) {
+        $app = $this;
+        if ( $this->getConfig('debug') ) {
+            $this->getLogger()->debug( $closure( $app ) );
+        }
+    }
+
     protected function execute( $stages ) {
         if ( count( $stages ) == 0 ) {
             return $this->response;
@@ -169,13 +176,6 @@ class Application implements PsrLoggerAware {
         }
 
         return clone $this->defaultResponse;
-    }
-
-    protected function debugLog( \Closure $closure ) {
-        $app = $this;
-        if ( $this->getConfig('debug') ) {
-            $this->getLogger()->debug( $closure( $app ) );
-        }
     }
 }
 
