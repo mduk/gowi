@@ -140,6 +140,10 @@ class Application implements PsrLoggerAware {
             return $result;
         }
 
+        if ( $result instanceof self ) {
+            return $result->run( $this->request, $this->response );
+        }
+
         return $this->execute( $stages );
     }
 
