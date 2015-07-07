@@ -40,7 +40,7 @@ class Application implements PsrLoggerAware {
         $this->request = ( $req ) ?: Request::createFromGlobals();
         $this->response = ( $res ) ?: $this->getDefaultResponse();
 
-        $this->debug( function( $app ) {
+        $this->debugLog( function( $app ) {
           $classes = implode( ', ', array_map( function( $e ) {
             return get_class( $e );
           }, $this->stages ) );
@@ -64,7 +64,7 @@ class Application implements PsrLoggerAware {
     }
 
     public function setConfig( $key, $value ) {
-        $this->debug( function( $app ) use ( $key, $value ) {
+        $this->debugLog( function( $app ) use ( $key, $value ) {
             $valueStr = print_r( $value, true );
             return "Application config update. {$key} => {$valueStr}";
         } );
@@ -111,7 +111,7 @@ class Application implements PsrLoggerAware {
             );
         }
 
-        $this->debug( function( $app ) use ( $name, $service ) {
+        $this->debugLog( function( $app ) use ( $name, $service ) {
             return "Set service '{$name}' to " . get_class( $service );
         } );
 
@@ -136,13 +136,13 @@ class Application implements PsrLoggerAware {
 
         $stage = array_shift( $stages );
 
-        $this->debug( function( $app ) use ( $stage ) {
+        $this->debugLog( function( $app ) use ( $stage ) {
             return "Executing stage: " . get_class( $stage );
         } );
 
         $result = $stage->execute( $this, $this->request, $this->response );
 
-        $this->debug( function( $app ) use ( $stage, $result ) {
+        $this->debugLog( function( $app ) use ( $stage, $result ) {
             return 'Stage ' . get_class( $stage ) . ' returned: ' . var_export( $result, true );
         } );
 
@@ -171,7 +171,7 @@ class Application implements PsrLoggerAware {
         return clone $this->defaultResponse;
     }
 
-    protected function debug( \Closure $closure ) {
+    protected function debugLog( \Closure $closure ) {
         $app = $this;
         if ( $this->getConfig('debug') ) {
             $this->getLogger()->debug( $closure( $app ) );
