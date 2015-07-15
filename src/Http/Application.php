@@ -14,7 +14,6 @@ use Mduk\Gowi\Http\Application\Stage;
 
 class Application implements PsrLoggerAware {
 
-    protected $baseDir = '';
     protected $stages = [];
     protected $log;
     protected $services = [];
@@ -23,13 +22,8 @@ class Application implements PsrLoggerAware {
     protected $response;
     protected $defaultResponse;
 
-    public function __construct( $baseDir ) {
-        $this->baseDir = $baseDir;
+    public function __construct() {
         $this->config = new Dot( [ 'debug' => false ] );
-    }
-
-    public function getBaseDir() {
-        return $this->baseDir;
     }
 
     public function addStage( Stage $stage ) {

@@ -13,7 +13,7 @@ use \Mduk\Gowi\Http\Response;
 class RouterTest extends \PHPUnit_Framework_TestCase {
 
     public function testNoRoutes() {
-        $app = new Application('/tmp');
+        $app = new Application;
         $app->setConfig( 'router', [] );
 
 		$request = Request::create( 'http://localhost/foo' );
@@ -26,7 +26,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testNoMatches() {
-        $app = new Application('/tmp');
+        $app = new Application;
         $app->setConfigArray( [
             'router' => [
                 'nomatch' => [
@@ -46,7 +46,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testStageNotFound() {
-        $app = new Application('/tmp');
+        $app = new Application;
         $app->setConfigArray([
             'router' => [
                 'myroute' => [
@@ -80,7 +80,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 		$request = Request::create('http://localhost/foo/bar');
 		$response = new Response;
 
-        $app = new Application('/tmp');
+        $app = new Application;
 		$app->setConfigArray( [
 			'router' => [
 				'foo' => [
@@ -103,7 +103,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
     }
 
 	public function testNamedRouter() {
-		$app = new Application('/tmp');
+		$app = new Application;
 		$app->setConfigArray( [
 			'router' => [
 				'public' => [

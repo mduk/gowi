@@ -16,7 +16,7 @@ class StubTest extends \PHPUnit_Framework_TestCase {
             return $res;
         } );
 
-        $app = new Application('/tmp');
+        $app = new Application;
         $req = Request::create( 'http://localhost/foo/bar' );
         $res = new Response;
         $res->setStatusCode( 500 );

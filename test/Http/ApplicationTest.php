@@ -18,7 +18,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
         $stage2 = $this->mockStage();
         $stage2->expects( $this->once() )->method( 'execute' );
 
-        $app = new Application('/tmp');
+        $app = new Application;
         $app->addStage( $stage1 );
         $app->addStage( $stage2 );
         $app->run();
@@ -34,7 +34,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
             ->method( 'execute' )
             ->will( $this->returnValue( $stage1 ) );
 
-        $app = new Application('/tmp');
+        $app = new Application;
         $app->addStage( $stage2 );
         $app->run();
     }
@@ -49,31 +49,31 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
         $stage2->expects( $this->never() )
             ->method( 'execute' );
 
-        $app = new Application('/tmp');
+        $app = new Application;
         $app->addStage( $stage1 );
         $app->addStage( $stage2 );
         $app->run();
     }
 
     public function testConfig() {
-        $app = new Application('/tmp');
+        $app = new Application;
         $app->setConfig( 'foo', 'bar' );
         $this->assertEquals( 'bar', $app->getConfig( 'foo' ) );
     }
 
     public function testGetConfig_InvalidKey_NoDefault() {
         $this->setExpectedException( '\\Mduk\\Gowi\\Http\\Application\\Exception' );
-        $app = new Application('/tmp');
+        $app = new Application;
         $app->getConfig( 'foo' );
     }
 
     public function testGetConfig_InvalidKey_WithDefault() {
-        $app = new Application('/tmp');
+        $app = new Application;
         $this->assertEquals( 'bar', $app->getConfig( 'foo', 'bar' ) );
     }
 
     public function testApplyConfigArray() {
-        $app = new Application( '/tmp' );
+        $app = new Application;
         $app->setConfigArray( [
             'foo' => 'bar',
             'foo2' => [
@@ -100,7 +100,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 
     public function testServices() {
         $service = (object) [ 'foo' => 'bar' ];
-        $app = new Application('/tmp');
+        $app = new Application;
         $app->setService( 'foo', $service );
 
         $this->assertEquals( $service, $app->getService( 'foo' ),
@@ -108,7 +108,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
     }
 
 	public function testLog() {
-		$app = new Application('/tmp');
+		$app = new Application;
 
 		$this->assertInstanceOf( '\\Psr\\Log\\LoggerInterface', $app->getLogger(),
 			"getLogger should return a PsrLogger");
@@ -132,7 +132,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 
 	public function assertDebugLog( $debug, $msgCount, $message ) {
 		$log = new ArrayLogger;
-		$app = new Application('/tmp');
+		$app = new Application;
 		$app->setConfig( 'debug', $debug );
 		$app->setLogger( $log );
 
