@@ -12,6 +12,7 @@
     { "type": "vcs", "url": "https://github.com/mduk/dot.git" }
   ],
 	"require": {
+    "mduk/dot": "dev-master",
 		"symfony/http-foundation": "~2.3",
 		"symfony/routing": "~2.6",
 		"zendframework/zend-config": "~2.3",

@@ -4,8 +4,43 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b6cf0100609eb1cbb82275e6e65b6b17",
+    "hash": "b31b75145ef12c336512d78044d78fae",
     "packages": [
+        {
+            "name": "mduk/dot",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mduk/dot.git",
+                "reference": "b43025447ea5d609ea7247481f2c4a68c40272f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mduk/dot/zipball/b43025447ea5d609ea7247481f2c4a68c40272f5",
+                "reference": "b43025447ea5d609ea7247481f2c4a68c40272f5",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mduk\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Daniel Kendell",
+                    "email": "daniel@kendell.org"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/mduk/dot/tree/master",
+                "issues": "https://github.com/mduk/dot/issues"
+            },
+            "time": "2015-06-25 23:21:00"
+        },
         {
             "name": "monolog/monolog",
             "version": "1.15.0",
@@ -1366,7 +1401,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "mduk/dot": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
