@@ -1,13 +1,16 @@
 {
 	"name": "mduk/gowi",
 	"description": "A PHP starting point for those who just want to Get On With It.",
-	 "license": "MIT",
+  "license": "MIT",
 	"authors": [
 		{
 			"name": "Daniel Kendell",
 			"email": "daniel.kendell@gmail.com"
 		}
 	],
+  "repositories": [
+    { "type": "vcs", "url": "https://github.com/mduk/dot.git" }
+  ],
 	"require": {
 		"symfony/http-foundation": "~2.3",
 		"symfony/routing": "~2.6",
