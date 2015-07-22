@@ -47,7 +47,7 @@ class Factory implements LoggerAwareInterface,
   }
 
   public function offsetGet( $factory ) {
-  	return $this->factories[ $factory ]();
+    return $this->get( $factory );
   }
 
   public function offsetSet( $name, $factory ) {
