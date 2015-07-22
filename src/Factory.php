@@ -34,6 +34,10 @@ class Factory implements LoggerAwareInterface,
     return $object;
   }
 
+  public function has( $factory ) {
+    return isset( $this->factories[ $factory ] );
+  }
+
   public function setFactory( $type, \Closure $factory ) {
     $this->factories[ $type ] = $factory;
   }
@@ -43,7 +47,7 @@ class Factory implements LoggerAwareInterface,
   }
 
   public function offsetExists( $factory ) {
-    return isset( $this->factories[ $factory ] );
+    return $this->has( $factory );
   }
 
   public function offsetGet( $factory ) {
