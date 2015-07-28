@@ -5,6 +5,7 @@ namespace Mduk\Gowi\Http;
 use Psr\Log\LoggerAwareInterface as PsrLoggerAware;
 use Psr\Log\LoggerInterface as PsrLogger;
 
+use Mduk\Gowi\Factory;
 use Mduk\Gowi\Logger\PhpErrorLog as PhpErrorLogger;
 
 use Mduk\Dot;
@@ -21,9 +22,11 @@ class Application implements PsrLoggerAware {
     protected $request;
     protected $response;
     protected $defaultResponse;
+	protected $serviceFactory;
 
     public function __construct() {
         $this->config = new Dot( [ 'debug' => false ] );
+		$this->serviceFactory = new Factory;
     }
 
     public function addStage( Stage $stage ) {
@@ -96,6 +99,10 @@ class Application implements PsrLoggerAware {
     public function getConfigArray() {
         return $this->config->getArray();
     }
+	
+	public function setServiceFactory( Factory $factory ) {
+		$this->serviceFactory = $factory;
+	}
 
     public function setService( $name, $service ) {
         if ( isset( $this->services[ $name ] ) ) {
@@ -113,14 +120,19 @@ class Application implements PsrLoggerAware {
     }
 
     public function getService( $name ) {
-        if ( !isset( $this->services[ $name ] ) ) {
-            throw new Application\Exception(
-                "Service {$name} is is not registered!",
-                Application\Exception::SERVICE_NOT_REGISTERED
-            );
-        }
+        if ( isset( $this->services[ $name ] ) ) {
+			return $this->services[ $name ];
+		}
 
-        return $this->services[ $name ];
+		try {
+			return $this->serviceFactory->get( $name );
+		}
+		catch ( \Exception $e ) {
+			throw new Application\Exception(
+				"Service {$name} is is not registered!",
+				Application\Exception::SERVICE_NOT_REGISTERED
+			);
+        }
     }
 
     public function debugLog( \Closure $closure ) {

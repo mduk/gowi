@@ -6,6 +6,8 @@ use Mduk\Gowi\Http\Application;
 use Mduk\Gowi\Http\Application\Stage;
 use Mduk\Gowi\Http\Application\Stage\Stub as StubStage;
 
+use Mduk\Gowi\Factory;
+
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -106,6 +108,20 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( $service, $app->getService( 'foo' ),
             "Didn't get the expected service back" );
     }
+
+	public function testServiceFactory() {
+		$factory = new Factory( [
+			'foo' => function() {
+				return 'bar';
+			}
+		] );
+
+		$app = new Application;
+		$app->setServiceFactory( $factory );
+
+		$this->assertEquals( 'bar', $app->getService( 'foo' ),
+			"Getting the 'foo' service should have returned 'bar'" );
+	}
 
 	public function testLog() {
 		$app = new Application;
