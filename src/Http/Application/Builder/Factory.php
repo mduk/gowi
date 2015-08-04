@@ -1,0 +1,65 @@
+<?php
+
+namespace Mduk\Gowi\Http\Application\Builder;
+
+use Mduk\Gowi\Factory as BaseFactory;
+use Psr\Log\LoggerInterface as Logger;
+
+class Factory extends BaseFactory {
+
+  protected $debug;
+  protected $transcoderFactory;
+  protected $serviceFactory;
+  protected $logger;
+
+  public function get( $builder ) {
+    switch ( $builder ) {
+
+      case 'router':
+        $builder = new \Mduk\Application\Builder\Router;
+        break;
+
+      case 'service-invocation':
+        $builder = new \Mduk\Application\Builder\ServiceInvocation;
+        break;
+
+      case 'webtable':
+        $builder = new \Mduk\Application\Builder\WebTable;
+        break;
+
+      case 'static-page':
+        $builder = new \Mduk\Application\Builder\StaticPage;
+        break;
+
+      case 'card':
+        $builder = new \Mduk\Application\Builder\Card;
+        break;
+
+      default:
+        throw new \Exception("Unknown application type: {$builder}" );
+    }
+
+    $builder->setDebug( $this->debug );
+    $builder->setLogger( $this->logger );
+    $builder->setApplicationBuilderFactory( $this );
+    $builder->setTranscoderFactory( $this->transcoderFactory );
+    $builder->setServiceFactory( $this->serviceFactory );
+    return $builder;
+  }
+
+  public function setDebug( $debug ) {
+    $this->debug = $debug;
+  }
+
+  public function setServiceFactory( GowiFactory $factory ) {
+    $this->serviceFactory = $factory;
+  }
+
+  public function setTranscoderFactory( GowiFactory $factory ) {
+    $this->transcoderFactory = $factory;
+  }
+
+  public function setLogger( Logger $logger ) {
+    $this->logger = $logger;
+  }
+}
