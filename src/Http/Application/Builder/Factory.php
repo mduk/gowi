@@ -31,7 +31,9 @@ class Factory extends BaseFactory {
     $builder->setLogger( $this->logger );
     $builder->setApplicationBuilderFactory( $this );
     $builder->setTranscoderFactory( $this->transcoderFactory );
-    $builder->setServiceFactory( $this->serviceFactory );
+    if ( $this->serviceFactory ) {
+      $builder->setServiceFactory( $this->serviceFactory );
+    }
     return $builder;
   }
 
