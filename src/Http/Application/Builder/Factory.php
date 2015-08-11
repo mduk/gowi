@@ -51,11 +51,11 @@ class Factory extends BaseFactory {
     $this->debug = $debug;
   }
 
-  public function setServiceFactory( GowiFactory $factory ) {
+  public function setServiceFactory( BaseFactory $factory ) {
     $this->serviceFactory = $factory;
   }
 
-  public function setTranscoderFactory( GowiFactory $factory ) {
+  public function setTranscoderFactory( BaseFactory $factory ) {
     $this->transcoderFactory = $factory;
   }
 
