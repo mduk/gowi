@@ -70,6 +70,10 @@ abstract class Builder {
   }
 
   protected function getApplicationBuilderFactory() {
+    if ( !$this->applicationBuilderFactory ) {
+      throw new \Exception( "No Application Builder Factory has been set" );
+    }
+
     return $this->applicationBuilderFactory;
   }
 
