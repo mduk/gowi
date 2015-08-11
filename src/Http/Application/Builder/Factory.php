@@ -19,8 +19,8 @@ class Factory extends BaseFactory {
         $builder = new \Mduk\Gowi\Http\Application\Builder\Router;
         break;
 
-      case 'service-invocation':
-        $builder = new \Mduk\Gowi\Http\Application\Builder\ServiceInvocation;
+      case 'stub':
+        $builder = new \Mduk\Gowi\Http\Application\Builder\Stub;
         break;
 
       default:
