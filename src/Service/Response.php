@@ -24,6 +24,14 @@ class Response {
     return $this;
   }
 
+  public function addError( $error, $context ) {
+    $this->results[] = [
+      'error' => $error,
+      'context' => $context
+    ];
+    return $this;
+  }
+
   public function getResults() {
     return $this->results;
   }
