@@ -16,23 +16,11 @@ class Factory extends BaseFactory {
     switch ( $builder ) {
 
       case 'router':
-        $builder = new \Mduk\Application\Builder\Router;
+        $builder = new \Mduk\Gowi\Http\Application\Builder\Router;
         break;
 
       case 'service-invocation':
-        $builder = new \Mduk\Application\Builder\ServiceInvocation;
-        break;
-
-      case 'webtable':
-        $builder = new \Mduk\Application\Builder\WebTable;
-        break;
-
-      case 'static-page':
-        $builder = new \Mduk\Application\Builder\StaticPage;
-        break;
-
-      case 'card':
-        $builder = new \Mduk\Application\Builder\Card;
+        $builder = new \Mduk\Gowi\Http\Application\Builder\ServiceInvocation;
         break;
 
       default:
