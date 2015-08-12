@@ -63,7 +63,10 @@ class Router extends BuilderAbstract {
       else {
         $builtRoutes = [
           $routeSpec['hook']['path'] => [
-            $routeSpec['hook']['method'] => $routeSpec['config']
+            $routeSpec['hook']['method'] => [
+              'builder' => $routeSpec['type'],
+              'config' => $routeSpec['config']
+            ]
           ]
         ];
       }
