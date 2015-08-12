@@ -30,7 +30,7 @@ class Router extends BuilderAbstract {
     if ( $this->getDebug() ) {
       $this->getLogger()
         ->debug(
-          __CLASS__ . ": Defining route: {$expandedHook['type']} " .
+          __CLASS__ . ": Defining route: {$type} " .
           "{$expandedHook['method']} {$expandedHook['path']}"
         );
     }
