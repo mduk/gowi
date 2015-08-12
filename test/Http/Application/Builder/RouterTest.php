@@ -10,6 +10,28 @@ use Mduk\Gowi\Factory;
 
 class RouterTest extends \PHPUnit_Framework_TestCase {
 
+  public function testColonHookExpansion() {
+    $builderFactory = new Factory( [
+      'stub' => function() {
+        return new StubBuilder;
+      }
+    ] );
+
+    $builder = new Router;
+    $builder->setApplicationBuilderFactory( $builderFactory );
+
+    $builder->defineRoute( 'stub', 'GET:/foo', [
+      'builder' => 'stub',
+      'config' => []
+    ] );
+
+    $response = $builder->build()->run( Request::create( '/foo', 'GET' ) );
+    $this->assertEquals( 200, $response->getStatusCode() );
+
+    $response = $builder->build()->run( Request::create( '/foo', 'POST' ) );
+    $this->assertEquals( 405, $response->getStatusCode() );
+  }
+
   public function testNotFound() {
     $builder = new Router;
     $app = $builder->build();
