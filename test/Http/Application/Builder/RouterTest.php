@@ -58,14 +58,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase {
 }
 
 class StubBuilder extends ApplicationBuilder {
-  public function buildRoutes( $path, $config ) {
-    return [
-      $path => [
-        'GET' => $config
-      ]
-    ];
-  }
-
   public function build( Application $app = null, array $config = [] ) {
     if ( !$app ) {
       $app = parent::build( $app, $config );

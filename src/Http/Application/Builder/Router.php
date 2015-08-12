@@ -24,29 +24,20 @@ class Router extends BuilderAbstract {
 
   protected $routes = [];
 
-  public function defineRoute( $type, $pathMethod, $config ) {
-    if ( is_array( $pathMethod ) && count( $pathMethod ) == 2 ) {
-      $method = $pathMethod[0];
-      $path = $pathMethod[1];
-    }
-    else if ( is_string( $pathMethod ) ) {
-      $method = 'GET';
-      $path = $pathMethod;
-    }
-    else {
-      throw new \InvalidArgumentException(
-        print_r( $pathMethod, true ) . ' is not acceptable as the $pathMethod argument'
-      );
-    }
+  public function defineRoute( $type, $hook, $config ) {
+    $expandedHook = $this->expandHook( $hook );
 
     if ( $this->getDebug() ) {
       $this->getLogger()
-        ->debug( __CLASS__ . ": Defining route: {$type} {$method} {$path}" );
+        ->debug(
+          __CLASS__ . ": Defining route: {$expandedHook['type']} " .
+          "{$expandedHook['method']} {$expandedHook['path']}"
+        );
     }
 
     $this->routes[] = [
       'type' => $type,
-      'pathmethod' => $pathMethod,
+      'hook' => $expandedHook,
       'config' => $config
     ];
   }
@@ -64,14 +55,43 @@ class Router extends BuilderAbstract {
     }
 
     foreach ( $this->routes as $routeSpec ) {
-      $builtRoutes = $this->getApplicationBuilderFactory()->get( $routeSpec['type'] )
-        ->buildRoutes( $routeSpec['pathmethod'], $routeSpec['config'] );
+      $builder = $this->getApplicationBuilderFactory()->get( $routeSpec['type'] );
+      
+      if ( is_callable( [ $builder, 'buildRoutes' ] ) ) {
+        $builtRoutes = $builder->buildRoutes( $routeSpec['hook'], $routeSpec['config'] );
+      }
+      else {
+        $builtRoutes = [
+          $routeSpec['hook']['path'] => [
+            $routeSpec['hook']['method'] => $routeSpec['config']
+          ]
+        ];
+      }
+
       $allRoutes = array_replace_recursive( $allRoutes, $builtRoutes );
     }
 
     $app->setConfig( 'routes', $allRoutes );
 
     return $app;
+  }
+
+  protected function expandHook( $hook ) {
+    if ( is_string( $hook ) ) {
+      if ( strpos( $hook, ':' ) !== false ) {
+        $shrapnel = explode( ':', $hook );
+        return [
+          'method' => $shrapnel[0],
+          'path' => $shrapnel[1]
+        ];
+      }
+      else {
+        return [
+          'method' => 'GET',
+          'path' => $hook
+        ];
+      }
+    }
   }
 
 }
